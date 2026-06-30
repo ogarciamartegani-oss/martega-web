@@ -14,9 +14,9 @@ export default function Layout() {
       <header className="site-header">
         <Brand />
         <nav id="main-nav" className={`main-nav ${open ? 'main-nav--open' : ''}`} aria-label="Navegación principal">
-          <a href="/#servicios" onClick={close}>Servicios</a>
-          <a href="/#metodo" onClick={close}>Cómo trabajamos</a>
-          <a href="/#proyectos" onClick={close}>Proyectos</a>
+          <a href="/#mantenimiento" onClick={close}>Mantenimiento</a>
+          <a href="/#planes" onClick={close}>Planes</a>
+          <a href="/#metodo" onClick={close}>Método</a>
           <a href="/#contacto" onClick={close}>Contacto</a>
           <Link to="/acceso" onClick={close} className="nav-client-link">
             <HardHat size={14} aria-hidden="true" /> Mi obra
@@ -40,7 +40,7 @@ export default function Layout() {
       <footer className="site-footer">
         <div className="footer-main">
           <Brand inverse />
-          <p>Instalaciones, reformas y mantenimiento integral para viviendas, negocios y comunidades en Valencia.</p>
+          <p>Mantenimiento integral para viviendas, negocios y comunidades. Cuidamos hoy lo que quieres conservar mañana.</p>
           <a className="footer-cta" href="/#contacto">Cuéntanos qué necesitas <span aria-hidden="true">↗</span></a>
         </div>
         <div className="footer-meta">

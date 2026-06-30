@@ -1,362 +1,252 @@
 import {
   ArrowRight,
-  Bath,
   Building2,
   CalendarCheck,
-  Camera,
   Check,
-  ClipboardList,
-  FileText,
-  Flame,
-  HardHat,
+  CheckCircle2,
+  Clock3,
+  Gauge,
   Home,
   MessageCircle,
   Phone,
+  RefreshCw,
   ShieldCheck,
-  Star,
-  Users,
+  Sparkles,
+  Store,
   Wrench,
   Zap,
 } from 'lucide-react'
 import LeadForm from '../components/LeadForm.jsx'
 import { company } from '../config.js'
 
-/* ─── DATA ─── */
-
-const tickerItems = [
-  { icon: FileText, text: 'Presupuesto cerrado y por escrito' },
-  { icon: ShieldCheck, text: 'Garantía en todos los trabajos' },
-  { icon: Users, text: 'Atención con un único interlocutor' },
-  { icon: Camera, text: 'Fotos de avance de la obra' },
-  { icon: MessageCircle, text: 'Respuesta ágil por WhatsApp' },
-  { icon: HardHat, text: 'Coordinación de todos los gremios' },
-  { icon: Zap, text: 'Electricidad e instalaciones certificadas' },
-  { icon: Wrench, text: 'Fontanería y climatización' },
-]
-
-const mainServices = [
+const clients = [
   {
     icon: Home,
-    title: 'Reformas integrales',
-    text: 'Coordinamos la reforma completa de tu vivienda o local, desde el primer boceto hasta la entrega de llaves.',
-    href: '#contacto',
+    number: '01',
+    title: 'Viviendas',
+    text: 'Pequeñas incidencias, revisiones periódicas y una casa que envejece mejor.',
   },
   {
-    icon: Bath,
-    title: 'Baños y cocinas',
-    text: 'Renovación completa con selección de materiales, instalaciones y acabados de calidad.',
-    href: '#contacto',
+    icon: Store,
+    number: '02',
+    title: 'Negocios',
+    text: 'Mantenimiento sin interrumpir la actividad y con un responsable que ya conoce el local.',
   },
   {
-    icon: Zap,
-    title: 'Electricidad',
-    text: 'Instalaciones eléctricas, cuadros, puntos de luz y automatizaciones según normativa vigente.',
-    href: '#contacto',
+    icon: Building2,
+    number: '03',
+    title: 'Comunidades',
+    text: 'Preventivo, zonas comunes e incidencias coordinadas con administradores y propietarios.',
   },
 ]
 
-const secondaryServices = [
-  { icon: Wrench, title: 'Fontanería', text: 'Reparación, instalación y mejora de redes de agua.' },
-  { icon: Flame, title: 'Climatización', text: 'Aire acondicionado, calefacción y ventilación.' },
-  { icon: Building2, title: 'Pladur y tabiquería', text: 'Distribución de espacios y trasdosados.' },
-  { icon: CalendarCheck, title: 'Mantenimiento', text: 'Contratos preventivos para viviendas y locales.' },
-  { icon: ShieldCheck, title: 'Comunidades', text: 'Zonas comunes, fachadas y cubiertas.' },
+const plans = [
+  {
+    name: 'Esencial',
+    label: 'Para anticiparse',
+    description: 'Una base preventiva para detectar desgaste antes de que se convierta en una avería.',
+    items: ['Revisión periódica', 'Informe de estado', 'Calendario preventivo', 'Canal directo'],
+  },
+  {
+    name: 'Continuo',
+    label: 'El más equilibrado',
+    description: 'Seguimiento activo para espacios que necesitan respuesta, orden y continuidad.',
+    items: ['Todo lo incluido en Esencial', 'Prioridad en incidencias', 'Bolsa de horas', 'Historial del inmueble'],
+    featured: true,
+  },
+  {
+    name: 'Integral',
+    label: 'Delegación completa',
+    description: 'Nos convertimos en el equipo técnico de confianza de tu inmueble o negocio.',
+    items: ['Plan hecho a medida', 'Coordinación de gremios', 'Seguimiento recurrente', 'Un único responsable'],
+  },
 ]
 
-const features = [
-  { icon: HardHat, title: 'Coordinamos todo', text: 'Gestionamos todos los oficios para que no tengas que hacerlo tú.' },
-  { icon: Users, title: 'Un único interlocutor', text: 'Una sola persona conoce tu proyecto de principio a fin.' },
-  { icon: FileText, title: 'Presupuesto cerrado', text: 'Lo que firmas es lo que pagas, sin sorpresas a mitad de la obra.' },
-  { icon: ShieldCheck, title: 'Garantía por escrito', text: 'Garantizamos nuestros trabajos. Si algo falla, lo solucionamos.' },
-  { icon: Camera, title: 'Fotos de avance', text: 'Recibes actualizaciones visuales del progreso de tu obra.' },
-  { icon: MessageCircle, title: 'Respuesta rápida', text: 'En horario laboral respondemos en menos de 30 minutos.' },
+const protocol = [
+  ['01', 'Escuchamos', 'Entendemos el uso del espacio, sus puntos débiles y lo que te preocupa.'],
+  ['02', 'Revisamos', 'Hacemos una primera lectura técnica y ordenamos las prioridades.'],
+  ['03', 'Planificamos', 'Creamos un calendario realista: qué hacer ahora, después y nunca de urgencia.'],
+  ['04', 'Cuidamos', 'Ejecutamos, documentamos y damos continuidad con el mismo equipo.'],
 ]
 
-const steps = [
-  ['01', 'Nos cuentas qué necesitas', 'Una llamada, un WhatsApp o el formulario es suficiente.'],
-  ['02', 'Visitamos el espacio', 'Un técnico visita el inmueble para entender el alcance real.'],
-  ['03', 'Presupuesto detallado', 'Recibes una propuesta clara, sin partidas ocultas.'],
-  ['04', 'Planificamos los trabajos', 'Fechas, materiales y gremios organizados desde el inicio.'],
-  ['05', 'Ejecutamos y comunicamos', 'Trabajamos con orden y recibes fotos de avance.'],
-  ['06', 'Revisión y entrega', 'Revisión conjunta antes del cierre para que todo quede perfecto.'],
-]
-
-const gallery = [
-  { label: 'Reforma integral', location: 'Ruzafa · València', phase: 'Antes / Después' },
-  { label: 'Baño completo', location: 'Patraix · València', phase: 'Resultado final' },
-  { label: 'Instalación eléctrica', location: 'Burjassot', phase: 'En ejecución' },
-  { label: 'Cocina renovada', location: 'Benimaclet · València', phase: 'Antes / Después' },
-  { label: 'Climatización', location: 'Campanar · València', phase: 'Instalación' },
-  { label: 'Comunidad de vecinos', location: "L'Eixample · València", phase: 'Fachada' },
-]
-
-const zones = [
-  'Valencia', 'Paterna', 'Burjassot', 'Mislata', 'Torrent',
-  'Aldaia', 'Alaquàs', 'Manises', 'Xirivella', 'Quart de Poblet',
-  'Picanya', 'Paiporta', 'Catarroja', "L'Horta Nord", "L'Horta Sud",
-]
-
-/* ─── COMPONENT ─── */
+const zones = ['València', 'Paterna', 'Burjassot', 'Mislata', 'Torrent', "L'Horta Nord", "L'Horta Sud"]
 
 export default function HomePage() {
-  const wa = company.phone
-    ? `https://wa.me/${company.phone.replace('+', '')}?text=Hola%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto`
+  const whatsapp = company.phone
+    ? `https://wa.me/${company.phone.replace('+', '')}?text=Hola%2C%20quiero%20una%20valoraci%C3%B3n%20de%20mantenimiento`
     : null
 
   return (
-    <>
-      {/* 1. HERO */}
-      <section className="hero">
-        <div className="hero__content">
-          <p className="hero__kicker"><span>—</span> Martega · Valencia</p>
-          <h1>
-            Todo lo que tu vivienda necesita,<br />
-            <em>en un único equipo.</em>
-          </h1>
-          <p className="hero__lead">
-            Reformas, instalaciones y mantenimiento coordinados por un solo responsable.
-            Presupuesto claro, seguimiento real y trabajo bien ejecutado de principio a fin.
+    <div className="maintenance-home">
+      <section className="maintenance-hero">
+        <div className="maintenance-hero__copy">
+          <p className="maintenance-kicker"><span>MARTEGA / 01</span> Mantenimiento integral en Valencia</p>
+          <h1>Lo que no se rompe<br /><em>también se mantiene.</em></h1>
+          <p className="maintenance-hero__lead">
+            Cuidamos viviendas, negocios y comunidades antes de que una pequeña incidencia
+            se convierta en una reparación urgente. Un equipo. Un plan. Cero improvisación.
           </p>
-          <div className="hero__actions">
-            {wa && (
-              <a className="button button--whatsapp" href={wa}>
-                <MessageCircle size={19} aria-hidden="true" /> Solicitar presupuesto
+          <div className="maintenance-hero__actions">
+            <a className="maintenance-button maintenance-button--primary" href="#contacto">
+              Quiero un plan de mantenimiento <ArrowRight size={17} />
+            </a>
+            {whatsapp && (
+              <a className="maintenance-text-link" href={whatsapp}>
+                <MessageCircle size={17} /> Hablar por WhatsApp
               </a>
             )}
-            <a className="button button--outline-dark" href="#servicios">
-              Ver servicios <ArrowRight size={16} aria-hidden="true" />
-            </a>
           </div>
         </div>
-        <div className="hero__deco" aria-hidden="true">
-          <div className="hero__deco-card">
-            <span className="hero__deco-num">1</span>
-            <span>Único interlocutor para toda la obra</span>
+
+        <div className="maintenance-console" aria-label="Resumen de un plan de mantenimiento activo">
+          <div className="maintenance-console__head">
+            <span><i /> SISTEMA ACTIVO</span>
+            <span>VAL / 2026</span>
           </div>
-          <div className="hero__deco-card">
-            <span className="hero__deco-num">+8</span>
-            <span>Oficios coordinados por nosotros</span>
+          <div className="maintenance-console__orbit">
+            <div className="maintenance-console__ring">
+              <ShieldCheck size={38} strokeWidth={1.4} />
+            </div>
+            <span className="orbit-label orbit-label--one">PREVENIR</span>
+            <span className="orbit-label orbit-label--two">REVISAR</span>
+            <span className="orbit-label orbit-label--three">RESOLVER</span>
           </div>
-          <div className="hero__deco-card hero__deco-card--accent">
-            <span className="hero__deco-num">0</span>
-            <span>Llamadas que tendrás que perseguir</span>
+          <div className="maintenance-console__stats">
+            <div><small>Próxima revisión</small><strong>Planificada</strong></div>
+            <div><small>Interlocutores</small><strong>Uno</strong></div>
+            <div><small>Historial técnico</small><strong>Disponible</strong></div>
           </div>
-          <p className="hero__deco-note">
-            <ShieldCheck size={14} /> Presupuesto por escrito, siempre
-          </p>
         </div>
       </section>
 
-      {/* 2. TICKER ANIMADO */}
-      <div className="ticker" aria-hidden="true">
-        <div className="ticker__track">
-          {[...tickerItems, ...tickerItems].map(({ icon: Icon, text }, i) => (
-            <span className="ticker__item" key={i}>
-              <Icon size={15} /> {text}
-            </span>
-          ))}
+      <div className="maintenance-marquee" aria-hidden="true">
+        <div>
+          {[...Array(2)].flatMap((_, index) => [
+            <span key={`a${index}`}><CalendarCheck /> Mantenimiento preventivo</span>,
+            <span key={`b${index}`}><Zap /> Electricidad</span>,
+            <span key={`c${index}`}><Wrench /> Fontanería</span>,
+            <span key={`d${index}`}><RefreshCw /> Seguimiento continuo</span>,
+            <span key={`e${index}`}><ShieldCheck /> Respuesta coordinada</span>,
+          ])}
         </div>
       </div>
 
-      {/* 3. SERVICIOS PRINCIPALES */}
-      <section className="section services" id="servicios">
-        <div className="section-intro">
-          <p className="eyebrow eyebrow--dark"><span />A qué nos dedicamos</p>
-          <h2>Soluciones integrales<br /><em>para tu hogar y negocio</em></h2>
+      <section className="maintenance-statement" id="mantenimiento">
+        <div className="maintenance-section-tag">01 — CAMBIAR LA LÓGICA</div>
+        <div className="maintenance-statement__content">
+          <h2>Una avería cuesta.<br /><em>La prevención, renta.</em></h2>
+          <div>
+            <p>
+              El mantenimiento no es llamar a alguien cuando algo falla. Es conocer el inmueble,
+              anticipar el desgaste y decidir con tiempo. Así se reducen urgencias, paradas y
+              reparaciones grandes.
+            </p>
+            <p className="maintenance-note"><Sparkles size={16} /> Menos sobresaltos. Más vida útil. Más control.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="maintenance-clients">
+        {clients.map(({ icon: Icon, number, title, text }) => (
+          <article className="maintenance-client-card" key={title}>
+            <div className="maintenance-client-card__top"><span>{number}</span><Icon size={24} strokeWidth={1.5} /></div>
+            <h3>{title}</h3>
+            <p>{text}</p>
+            <a href="#contacto">Ver cómo lo cuidamos <ArrowRight size={14} /></a>
+          </article>
+        ))}
+      </section>
+
+      <section className="maintenance-plans" id="planes">
+        <div className="maintenance-plans__intro">
+          <div className="maintenance-section-tag maintenance-section-tag--light">02 — ELIGE TU NIVEL DE TRANQUILIDAD</div>
+          <h2>No vendemos urgencias.<br /><em>Diseñamos continuidad.</em></h2>
           <p>
-            Somos expertos en reformas, instalaciones y mantenimiento en Valencia,
-            ejecutados por un equipo propio. Un solo interlocutor para tu proyecto,
-            de la visita al acabado.
+            La frecuencia y el alcance se ajustan después de conocer el espacio. Sin paquetes
+            inflados ni trabajos que no necesitas.
           </p>
         </div>
-        <div className="services-main-grid">
-          {mainServices.map(({ icon: Icon, title, text, href }) => (
-            <article className="service-main-card" key={title}>
-              <div className="service-main-card__icon"><Icon size={28} aria-hidden="true" /></div>
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <a href={href} className="service-main-card__link">
-                Solicitar presupuesto <ArrowRight size={14} aria-hidden="true" />
-              </a>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. SERVICIOS SECUNDARIOS */}
-      <section className="section services-secondary">
-        <p className="eyebrow eyebrow--dark"><span />También trabajamos en</p>
-        <h2>Un mismo equipo para<br /><em>todas tus necesidades</em></h2>
-        <div className="services-secondary-grid">
-          {secondaryServices.map(({ icon: Icon, title, text }) => (
-            <article className="service-sec-card" key={title}>
-              <Icon size={22} aria-hidden="true" />
-              <div>
-                <h3>{title}</h3>
-                <p>{text}</p>
+        <div className="maintenance-plan-grid">
+          {plans.map((plan) => (
+            <article className={`maintenance-plan ${plan.featured ? 'maintenance-plan--featured' : ''}`} key={plan.name}>
+              <div className="maintenance-plan__head">
+                <span>{plan.label}</span>
+                {plan.featured && <i>RECOMENDADO</i>}
               </div>
+              <h3>{plan.name}</h3>
+              <p>{plan.description}</p>
+              <ul>
+                {plan.items.map((item) => <li key={item}><Check size={14} /> {item}</li>)}
+              </ul>
+              <a href="#contacto">Solicitar valoración <ArrowRight size={15} /></a>
             </article>
           ))}
         </div>
-        <div className="services-secondary__cta">
-          {wa && (
-            <a className="button button--whatsapp" href={wa}>
-              <MessageCircle size={17} /> Pide tu presupuesto gratis
-            </a>
-          )}
-        </div>
       </section>
 
-      {/* 5. FEATURES / POR QUÉ ELEGIRNOS */}
-      <section className="section features" id="nosotros">
-        <div className="section-intro">
-          <p className="eyebrow eyebrow--dark"><span />Por qué elegirnos</p>
-          <h2>Tu proyecto en buenas manos,<br /><em>de principio a fin.</em></h2>
+      <section className="maintenance-protocol" id="metodo">
+        <div className="maintenance-protocol__intro">
+          <div className="maintenance-section-tag">03 — MÉTODO MARTEGA</div>
+          <h2>El buen mantenimiento<br /><em>casi no se nota.</em></h2>
+          <p>Porque está ordenado, documentado y ocurre antes de que tengas que perseguir a nadie.</p>
         </div>
-        <div className="features-grid">
-          {features.map(({ icon: Icon, title, text }) => (
-            <div className="feature-item" key={title}>
-              <div className="feature-item__icon"><Icon size={22} aria-hidden="true" /></div>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </div>
-          ))}
-        </div>
-        <div className="features__cta">
-          {wa && (
-            <a className="button button--blue" href={wa}>
-              <MessageCircle size={17} /> Pide tu presupuesto
-            </a>
-          )}
-        </div>
-      </section>
-
-      {/* 6. MÉTODO */}
-      <section className="section method" id="metodo">
-        <div className="section-intro">
-          <p className="eyebrow eyebrow--dark"><span />Método Martega</p>
-          <h2>Del primer mensaje<br /><em>a la última revisión.</em></h2>
-        </div>
-        <ol className="method-steps">
-          {steps.map(([number, title, text]) => (
+        <ol className="maintenance-protocol__steps">
+          {protocol.map(([number, title, text]) => (
             <li key={number}>
-              <span className="method-steps__num">{number}</span>
-              <div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
+              <span>{number}</span>
+              <div><h3>{title}</h3><p>{text}</p></div>
+              <CheckCircle2 size={20} strokeWidth={1.4} />
             </li>
           ))}
         </ol>
       </section>
 
-      {/* 7. REVIEWS */}
-      <section className="reviews">
-        <div className="reviews__badge">
-          <div className="reviews__stars">
-            {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={20} fill="currentColor" />)}
-          </div>
-          <strong>4,9 sobre 5 en Google</strong>
-          <span>Basado en más de 30 reseñas reales de clientes</span>
+      <section className="maintenance-support" id="servicios">
+        <div className="maintenance-support__graphic" aria-hidden="true">
+          <span>MARTEGA</span>
+          <Wrench />
+          <small>CAPACIDAD TÉCNICA / RESPALDO REAL</small>
         </div>
-        <blockquote className="reviews__quote">
-          "Contratamos a Martega para reformar el baño y la cocina. El resultado fue exactamente
-          lo que acordamos, en el plazo prometido y sin sorpresas en el presupuesto. El seguimiento
-          fue impecable."
-          <cite>— Ana G., Valencia</cite>
-        </blockquote>
-      </section>
-
-      {/* 8. GALERÍA */}
-      <section className="section gallery" id="proyectos">
-        <div className="section-intro">
-          <p className="eyebrow eyebrow--dark"><span />Galería de proyectos</p>
-          <h2>Conoce algunos de<br /><em>nuestros últimos trabajos.</em></h2>
+        <div className="maintenance-support__copy">
+          <div className="maintenance-section-tag">04 — CUANDO HAY QUE ACTUAR</div>
+          <h2>Mantenemos porque<br /><em>sabemos ejecutar.</em></h2>
           <p>
-            Estamos preparando el archivo visual de obras de Martega.
-            Pronto podrás ver antes, durante y después de cada proyecto.
+            Electricidad, fontanería, climatización, albañilería y reformas. Si una revisión
+            detecta una intervención, coordinamos los oficios y la resolvemos sin empezar de cero.
           </p>
-        </div>
-        <div className="gallery-grid">
-          {gallery.map(({ label, location, phase }) => (
-            <div className="gallery-card" key={label + location}>
-              <div className="gallery-card__photo">
-                <span className="gallery-card__phase">{phase}</span>
-              </div>
-              <div className="gallery-card__info">
-                <strong>{label}</strong>
-                <span>{location}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="gallery__cta">
-          {wa && (
-            <a className="button button--whatsapp" href={wa}>
-              <MessageCircle size={17} /> ¿Tienes un proyecto? Cuéntanoslo
-            </a>
-          )}
+          <div className="maintenance-support__list">
+            <span><Zap size={17} /> Instalaciones</span>
+            <span><Wrench size={17} /> Reparaciones</span>
+            <span><Building2 size={17} /> Reformas</span>
+            <span><Gauge size={17} /> Eficiencia</span>
+          </div>
         </div>
       </section>
 
-      {/* 9. ZONAS */}
-      <section className="section zones" id="zonas">
-        <div className="zones__content">
-          <p className="eyebrow eyebrow--dark"><span />Zona de servicio</p>
-          <h2>De Valencia,<br /><em>para Valencia.</em></h2>
-          <p>
-            Cubrimos Valencia ciudad y todos los municipios del área metropolitana.
-            Si tu zona no está en la lista, llámanos: probablemente también vayamos.
-          </p>
-          {wa && (
-            <a className="button button--blue" href={wa}>
-              ¿Trabajáis en mi zona? Consúltanos <ArrowRight size={15} />
-            </a>
-          )}
+      <section className="maintenance-zone">
+        <div>
+          <div className="maintenance-section-tag maintenance-section-tag--light">05 — CERCA CUENTA</div>
+          <h2>Valencia y su área metropolitana.</h2>
         </div>
-        <ul className="zones__list">
-          {zones.map((zone) => (
-            <li key={zone}><Check size={13} aria-hidden="true" /> {zone}</li>
-          ))}
-        </ul>
+        <ul>{zones.map((zone) => <li key={zone}><Check size={13} /> {zone}</li>)}</ul>
       </section>
 
-      {/* 10. CONTACTO */}
-      <section className="contact-section" id="contacto">
-        <div className="contact-intro">
-          <p className="eyebrow eyebrow--dark"><span />¿Listo para empezar?</p>
-          <h2>Solicita presupuesto<br /><em>sin compromiso.</em></h2>
+      <section className="maintenance-contact" id="contacto">
+        <div className="maintenance-contact__intro">
+          <div className="maintenance-section-tag">06 — PRIMERA VALORACIÓN</div>
+          <h2>Empecemos por mirar<br /><em>lo que nadie mira.</em></h2>
           <p>
-            Escríbenos ahora y nuestro equipo se encargará de estudiar tu caso y
-            prepararte una propuesta clara y detallada.
+            Cuéntanos qué espacio quieres cuidar. Revisaremos tu caso y te propondremos un plan
+            proporcionado, claro y sin compromiso.
           </p>
-          <div className="contact-channels">
-            {wa && (
-              <a className="contact-channel contact-channel--whatsapp" href={wa}>
-                <MessageCircle size={22} aria-hidden="true" />
-                <div>
-                  <strong>WhatsApp</strong>
-                  <span>Respondemos en menos de 30 min</span>
-                </div>
-              </a>
-            )}
-            {company.phone && (
-              <a className="contact-channel" href={`tel:${company.phone}`}>
-                <Phone size={22} aria-hidden="true" />
-                <div>
-                  <strong>Llamar</strong>
-                  <span>{company.phoneDisplay || company.phone}</span>
-                </div>
-              </a>
-            )}
+          <div className="maintenance-contact__channels">
+            {whatsapp && <a href={whatsapp}><MessageCircle size={19} /><span><small>WHATSAPP</small>Escribir ahora</span></a>}
+            {company.phone && <a href={`tel:${company.phone}`}><Phone size={19} /><span><small>TELÉFONO</small>{company.phoneDisplay || company.phone}</span></a>}
           </div>
-          <div className="contact-details">
-            <div><span>Zona de trabajo</span><strong>Valencia y alrededores</strong></div>
-            {company.email && <div><span>Correo</span><strong>{company.email}</strong></div>}
-          </div>
+          <p className="maintenance-contact__promise"><Clock3 size={15} /> Te responderá una persona del equipo, no un robot.</p>
         </div>
         <LeadForm />
       </section>
-    </>
+    </div>
   )
 }

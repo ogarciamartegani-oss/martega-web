@@ -114,10 +114,10 @@ export default function LeadForm() {
           <span>Servicio *</span>
           <select name="servicio" value={form.servicio} onChange={update} required>
             <option value="">Selecciona un servicio</option>
-            <option value="instalaciones">Instalaciones</option>
-            <option value="reforma">Reforma</option>
             <option value="mantenimiento">Mantenimiento</option>
             <option value="incidencia">Incidencia o reparación</option>
+            <option value="instalaciones">Instalaciones</option>
+            <option value="reforma">Reforma</option>
             <option value="otro">Otro</option>
           </select>
         </label>
@@ -150,7 +150,7 @@ export default function LeadForm() {
       {error && <p className="form-error" role="alert">{error}</p>}
       <button className="submit-button" type="submit" disabled={status === 'sending' || (!form.telefono.trim() && !form.email.trim())}>
         {status === 'sending' ? <LoaderCircle className="spin" size={19} aria-hidden="true" /> : <Send size={19} aria-hidden="true" />}
-        {status === 'sending' ? 'Enviando…' : 'Solicitar valoración'}
+        {status === 'sending' ? 'Enviando…' : 'Solicitar primera valoración'}
       </button>
     </form>
   )
