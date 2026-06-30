@@ -16,6 +16,7 @@ export default function Layout() {
         <nav id="main-nav" className={`main-nav ${open ? 'main-nav--open' : ''}`} aria-label="Navegación principal">
           <a href="/#mantenimiento" onClick={close}>Mantenimiento</a>
           <a href="/#servicios" onClick={close}>Servicios técnicos</a>
+          <a href="/#reformas" onClick={close}>Reformas</a>
           <a href="/#metodo" onClick={close}>Método</a>
           <a href="/#contacto" onClick={close}>Contacto</a>
           <Link to="/acceso" onClick={close} className="nav-client-link">
@@ -40,7 +41,7 @@ export default function Layout() {
       <footer className="site-footer">
         <div className="footer-main">
           <Brand inverse />
-          <p>Mantenimiento integral para viviendas, negocios y comunidades. Cuidamos hoy lo que quieres conservar mañana.</p>
+          <p>Mantenimiento técnico y reformas para viviendas, negocios y comunidades. Cuidamos, resolvemos y transformamos.</p>
           <a className="footer-cta" href="/#contacto">Cuéntanos qué necesitas <span aria-hidden="true">↗</span></a>
         </div>
         <div className="footer-meta">

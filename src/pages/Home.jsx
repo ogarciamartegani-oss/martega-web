@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Bath,
   Building2,
   Check,
   Clock3,
@@ -9,6 +10,7 @@ import {
   MessageCircle,
   Phone,
   RefreshCw,
+  Ruler,
   ShieldCheck,
   Snowflake,
   Store,
@@ -131,6 +133,30 @@ export default function HomePage() {
               <p>{text}</p>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="market-renovations" id="reformas">
+        <div className="market-renovations__media">
+          <img src="/reformas-editorial-v1.jpg" alt="Profesionales de Martega planificando una reforma integral" loading="lazy" />
+          <span>REFORMAS / VALENCIA</span>
+        </div>
+        <div className="market-renovations__content">
+          <p className="market-eyebrow market-eyebrow--light"><span /> Reformas</p>
+          <h2>Cuando mantener<br />ya no basta,<br /><em>transformamos.</em></h2>
+          <p>
+            Reformas integrales y parciales para viviendas y locales. Planificamos,
+            coordinamos los gremios y cuidamos la ejecución con un único responsable.
+          </p>
+          <div className="market-renovations__types">
+            <span><Building2 size={16} /> Viviendas y locales</span>
+            <span><Bath size={16} /> Cocinas y baños</span>
+            <span><Ruler size={16} /> Redistribución</span>
+            <span><Zap size={16} /> Instalaciones</span>
+          </div>
+          <a className="market-renovations__cta" href="#contacto">
+            Cuéntanos tu reforma <ArrowRight size={17} />
+          </a>
         </div>
       </section>
 

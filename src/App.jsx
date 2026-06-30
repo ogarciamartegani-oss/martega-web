@@ -16,7 +16,7 @@ function ScrollAndTitle() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
     const titles = {
-      '/': 'Martega | Mantenimiento integral en Valencia',
+      '/': 'Martega | Mantenimiento y reformas en Valencia',
       '/aviso-legal': 'Aviso legal | Martega',
       '/privacidad': 'Política de privacidad | Martega',
       '/cookies': 'Política de cookies | Martega',
