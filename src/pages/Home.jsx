@@ -2,7 +2,6 @@ import {
   ArrowRight,
   Building2,
   Check,
-  ClipboardCheck,
   Clock3,
   FileCheck2,
   Hotel,
@@ -50,8 +49,11 @@ export default function HomePage() {
   return (
     <div className="market-home">
       <section className="market-hero">
+        <div className="market-hero__media" aria-hidden="true">
+          <img src="/hero-maintenance-v2.jpg" alt="" fetchPriority="high" />
+        </div>
         <div className="market-hero__copy">
-          <p className="market-eyebrow"><span /> Mantenimiento técnico en Valencia</p>
+          <p className="market-eyebrow market-eyebrow--light"><span /> Mantenimiento técnico en Valencia</p>
           <h1>Tu espacio tiene que<br /><em>seguir funcionando.</em></h1>
           <p className="market-hero__lead">
             Resolvemos y prevenimos incidencias de electricidad, fontanería,
@@ -73,24 +75,10 @@ export default function HomePage() {
             <span><Check /> Valencia y alrededores</span>
           </div>
         </div>
-
-        <div className="market-hero__visual" aria-label="Servicios de mantenimiento técnico coordinados por Martega">
-          <div className="market-visual__header">
-            <span>MARTEGA / CONTROL TÉCNICO</span>
-            <i>ACTIVO</i>
-          </div>
-          <div className="market-visual__center">
-            <div className="market-visual__core"><ShieldCheck size={42} /></div>
-            <span className="market-node market-node--one"><Zap /> Electricidad</span>
-            <span className="market-node market-node--two"><Wrench /> Fontanería</span>
-            <span className="market-node market-node--three"><Snowflake /> Climatización</span>
-            <span className="market-node market-node--four"><ClipboardCheck /> Seguimiento</span>
-          </div>
-          <div className="market-visual__footer">
-            <span><small>01</small> Detectar</span>
-            <span><small>02</small> Resolver</span>
-            <span><small>03</small> Prevenir</span>
-          </div>
+        <div className="market-hero__signature">
+          <span>MARTEGA / VALENCIA</span>
+          <strong>Mantenimiento para espacios<br />que no pueden parar.</strong>
+          <div><i /> SISTEMA ACTIVO</div>
         </div>
       </section>
 
