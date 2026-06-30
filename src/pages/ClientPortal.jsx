@@ -286,7 +286,7 @@ export default function ClientPortal() {
       </main>
 
       <footer className="portal-footer">
-        <span>MARTEGA · Gestión clara de principio a fin</span>
+        <Brand inverse />
         <span><ShieldCheck size={14} /> Enlace personal y privado</span>
       </footer>
     </div>

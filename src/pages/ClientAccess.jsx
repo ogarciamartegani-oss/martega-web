@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, HardHat, KeyRound, MessageCircle, ShieldCheck } from 'lucide-react'
+import Brand from '../components/Brand.jsx'
 import { company } from '../config.js'
 
 export default function ClientAccess() {
@@ -25,6 +26,8 @@ export default function ClientAccess() {
   return (
     <div className="client-access-page">
       <div className="client-access-card">
+
+        <div className="client-access-brand"><Brand /></div>
 
         {/* Icon */}
         <div className="client-access-icon">

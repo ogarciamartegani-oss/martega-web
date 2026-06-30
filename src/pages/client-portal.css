@@ -128,3 +128,43 @@
 @media (prefers-reduced-motion: reduce) {
   .portal-hero__stamp-ring { animation: none; }
 }
+
+/* Unified Martega identity: navy, corporate blue and ivory only */
+.client-portal {
+  --portal-blue: #263d91;
+  --portal-navy: #101a37;
+  --portal-cyan: #f5f3ec;
+  --portal-paper: #f5f3ec;
+  font-family: 'Manrope', sans-serif;
+}
+.portal-header { min-height: 72px; border-color: #deddd7; }
+.portal-header__trust svg { color: var(--portal-blue); }
+.portal-hero { background: var(--portal-navy); }
+.portal-hero::before { background: radial-gradient(circle at 78% 15%, rgba(38,61,145,.6), transparent 35%); }
+.portal-hero__grid { opacity: .08; }
+.portal-kicker span { background: #fff; box-shadow: none; }
+.portal-hero h1 { font: 650 clamp(42px,5.7vw,76px)/.96 'Manrope', sans-serif; letter-spacing: -.055em; text-transform: none; }
+.portal-progress { border-color: rgba(255,255,255,.25); background: rgba(38,61,145,.2); backdrop-filter: blur(12px); }
+.portal-progress__number { color: #fff; font-family: 'Manrope', sans-serif; font-weight: 650; letter-spacing: -.05em; }
+.portal-progress__track { background: rgba(255,255,255,.2); }
+.portal-progress__track i { background: #fff; box-shadow: none; }
+.next-milestone { color: var(--portal-navy); background: #fff; border-left: 5px solid var(--portal-blue); box-shadow: 8px 8px 0 #d8d7d1; }
+.next-milestone p, .next-milestone span { color: #69706b; }
+.next-milestone h2 { font: 650 23px/1.1 'Manrope', sans-serif; letter-spacing: -.03em; text-transform: none; }
+.portal-section__heading span, .update-list time, .invoice-summary strong { color: var(--portal-blue); }
+.portal-section__heading h2, .portal-card h2 { font: 650 27px/1 'Manrope', sans-serif; letter-spacing: -.035em; text-transform: none; }
+.milestone--en_curso .milestone__icon { color: #fff; background: var(--portal-blue); box-shadow: 0 0 0 5px rgba(38,61,145,.12); }
+.milestone--completado .milestone__icon { background: var(--portal-navy); }
+.portal-card--contact { background: var(--portal-navy); }
+.portal-card--contact > svg { color: #fff; }
+.portal-card--contact a { border-color: rgba(255,255,255,.3); }
+.portal-card__heading { color: var(--portal-blue); }
+.portal-hero__stamp { color: #fff; }
+.portal-hero__stamp-ring { border-color: rgba(255,255,255,.45); }
+.portal-hero__stamp-letter { border-color: rgba(255,255,255,.7); }
+.portal-footer { align-items: center; color: rgba(255,255,255,.66); background: var(--portal-navy); }
+.portal-footer .brand--inverse { padding: 5px 8px; }
+.portal-footer .brand--inverse .brand__logo-img { height: 36px; }
+.portal-state { background: var(--portal-paper); }
+.portal-state--error h1 { font: 650 36px/1 'Manrope', sans-serif; letter-spacing: -.04em; text-transform: none; }
+.portal-state--error a { color: var(--portal-blue); }

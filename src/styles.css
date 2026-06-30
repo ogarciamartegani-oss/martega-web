@@ -1398,3 +1398,80 @@ img { max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   .market-hero__media img, .market-hero__copy, .market-hero__signature { animation: none; }
 }
+
+/* ─── PROFESSIONAL PALETTE · MARTEGA BLUE ─── */
+.market-home {
+  --mk-ink: #101a37;
+  --mk-blue: #263d91;
+  --mk-lime: #f5f3ec;
+  --mk-paper: #f5f3ec;
+  --mk-line: #d9d8d1;
+}
+.market-hero::before {
+  background:
+    linear-gradient(90deg, rgba(9,18,48,.9) 0%, rgba(9,18,48,.69) 37%, rgba(9,18,48,.08) 72%, rgba(9,18,48,.16) 100%),
+    linear-gradient(0deg, rgba(9,18,48,.6) 0%, transparent 48%);
+}
+.market-hero__media::after { background: linear-gradient(115deg, rgba(22,38,92,.16), rgba(38,61,145,.08)); }
+.market-hero .market-button--primary { color: var(--mk-blue); }
+.market-hero .market-button--primary:hover { color: #fff; }
+.market-hero__signature div { color: #fff; }
+.market-hero__signature i { background: #fff; box-shadow: 0 0 12px rgba(255,255,255,.8); }
+.market-audience-grid article:hover { color: #fff; background: var(--mk-blue); }
+.market-audience-grid article:hover p,
+.market-audience-grid article:hover > div { color: rgba(255,255,255,.72); }
+.market-audience-grid article:hover::after { background: #fff; }
+.market-demand__dark { background: radial-gradient(circle at 20% 20%, #1d3275, var(--mk-ink) 58%); }
+.market-demand__dark > svg,
+.market-process li > span,
+.market-process li > svg,
+.market-renovations__types svg { color: #fff; }
+.market-process__intro h2 em,
+.market-renovations h2 em { color: #fff; }
+.market-renovations__cta { color: var(--mk-blue); }
+.market-proof { color: #fff; background: var(--mk-blue); }
+.market-proof > div { border-color: rgba(255,255,255,.2); }
+.market-proof span { color: rgba(255,255,255,.68); }
+.site-header .header-phone { background: #263d91; }
+.site-header .header-phone:hover { background: #101a37; }
+.site-footer { background: #101a37; }
+.site-footer .footer-cta { color: #fff; }
+.brand--inverse {
+  width: fit-content;
+  padding: 7px 10px;
+  background: #fff;
+}
+.brand--inverse .brand__logo-img { width: auto; height: 48px; }
+
+@media (max-width: 700px) {
+  .market-hero::before {
+    background: linear-gradient(90deg, rgba(9,18,48,.87), rgba(9,18,48,.3)), linear-gradient(0deg, rgba(9,18,48,.72), transparent 60%);
+  }
+  .brand--inverse .brand__logo-img { height: 42px; }
+}
+
+/* ─── CLIENT ACCESS · SAME BRAND SYSTEM ─── */
+.client-access-page {
+  position: relative;
+  background:
+    linear-gradient(rgba(38,61,145,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(38,61,145,.045) 1px, transparent 1px),
+    #f5f3ec;
+  background-size: 38px 38px;
+}
+.client-access-page::before { content: ''; position: fixed; width: 460px; height: 460px; right: -220px; top: -220px; border: 1px solid rgba(38,61,145,.16); border-radius: 50%; box-shadow: 0 0 0 70px rgba(38,61,145,.025), 0 0 0 140px rgba(38,61,145,.018); }
+.client-access-card { position: relative; padding: 38px 40px 42px; border: 0; border-top: 4px solid #263d91; border-radius: 0; box-shadow: 18px 18px 0 #101a37; }
+.client-access-brand { margin-bottom: 34px; padding-bottom: 25px; border-bottom: 1px solid #deddd7; }
+.client-access-brand .brand__logo-img { height: 42px; }
+.client-access-icon { width: 48px; height: 48px; color: #fff; background: #263d91; border-radius: 0; }
+.client-access-card h1 { font: 650 32px/1.05 'Manrope', sans-serif; letter-spacing: -.04em; text-transform: none; color: #101a37; }
+.client-access-input, .client-access-button, .client-access-help, .client-access-help-link { border-radius: 0; }
+.client-access-input:focus { border-color: #263d91; box-shadow: 0 0 0 3px rgba(38,61,145,.1); }
+.client-access-button { background: #263d91; }
+.client-access-button:hover { background: #101a37; }
+.client-access-trust svg, .client-access-help-link svg, .client-access-demo a { color: #263d91; }
+.client-access-help { background: #f5f3ec; }
+
+@media (max-width: 480px) {
+  .client-access-card { box-shadow: 9px 9px 0 #101a37; }
+}
