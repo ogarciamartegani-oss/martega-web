@@ -15,7 +15,7 @@ export default function Layout() {
         <Brand />
         <nav id="main-nav" className={`main-nav ${open ? 'main-nav--open' : ''}`} aria-label="Navegación principal">
           <a href="/#mantenimiento" onClick={close}>Mantenimiento</a>
-          <a href="/#planes" onClick={close}>Planes</a>
+          <a href="/#servicios" onClick={close}>Servicios técnicos</a>
           <a href="/#metodo" onClick={close}>Método</a>
           <a href="/#contacto" onClick={close}>Contacto</a>
           <Link to="/acceso" onClick={close} className="nav-client-link">
