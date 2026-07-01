@@ -17,6 +17,7 @@ import {
   MessageCircle,
   Phone,
   ReceiptText,
+  RefreshCw,
   ShieldCheck,
 } from 'lucide-react'
 import Brand from '../components/Brand.jsx'
@@ -113,6 +114,7 @@ export default function ClientPortal() {
   const { token } = useParams()
   const [portal, setPortal] = useState(token === 'demo' ? demoPortal : null)
   const [status, setStatus] = useState(token === 'demo' ? 'ready' : 'loading')
+  const [lastSync, setLastSync] = useState(token === 'demo' ? new Date() : null)
 
   useEffect(() => {
     if (token === 'demo') return
@@ -131,9 +133,19 @@ export default function ClientPortal() {
 
       setPortal(data)
       setStatus('ready')
+      setLastSync(new Date())
     }
 
     loadPortal()
+    const refresh = window.setInterval(loadPortal, 60_000)
+    const refreshWhenVisible = () => {
+      if (document.visibilityState === 'visible') loadPortal()
+    }
+    document.addEventListener('visibilitychange', refreshWhenVisible)
+    return () => {
+      window.clearInterval(refresh)
+      document.removeEventListener('visibilitychange', refreshWhenVisible)
+    }
   }, [token])
 
   const pendingTotal = useMemo(() => (
@@ -154,7 +166,7 @@ export default function ClientPortal() {
     <div className="client-portal">
       <header className="portal-header">
         <Brand />
-        <div className="portal-header__trust"><ShieldCheck size={16} /> Espacio privado</div>
+        <div className="portal-header__trust"><RefreshCw size={15} /> Actualización automática</div>
         <Link className="portal-header__back" to="/"><ArrowLeft size={16} /> martega.es</Link>
       </header>
 
@@ -174,6 +186,7 @@ export default function ClientPortal() {
             <p className="portal-kicker"><span /> Tu obra · {obra.referencia}</p>
             <h1>{obra.nombre}</h1>
             <div className="portal-location"><MapPin size={16} /> {obra.ubicacion}</div>
+            {lastSync && <div className="portal-last-sync"><ShieldCheck size={13} /> Datos sincronizados a las {lastSync.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div>}
           </div>
           <div className="portal-progress" aria-label={`Progreso estimado: ${obra.progreso}%`}>
             <div className="portal-progress__number">{obra.progreso}<small>%</small></div>

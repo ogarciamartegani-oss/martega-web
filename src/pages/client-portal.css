@@ -19,6 +19,7 @@
 .portal-kicker span { width: 35px; height: 2px; background: var(--portal-cyan); box-shadow: 0 0 16px rgba(81,216,238,.55); }
 .portal-hero h1 { max-width: 780px; margin: 25px 0; font: 900 clamp(44px,6vw,82px)/.95 var(--display); letter-spacing: -.04em; text-transform: uppercase; }
 .portal-location { display: flex; gap: 8px; color: #c9d2e7; font-size: 13px; }
+.portal-last-sync { display: flex; align-items: center; gap: 6px; margin-top: 12px; color: #91a0c5; font-size: 9px; letter-spacing: .04em; }
 .portal-progress { align-self: center; display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; padding: 28px; border: 1px solid rgba(81,216,238,.35); background: rgba(5,18,52,.58); backdrop-filter: blur(6px); }
 .portal-progress__number { font: 900 58px/1 var(--display); color: var(--portal-cyan); }
 .portal-progress__number small { font-size: 22px; }
