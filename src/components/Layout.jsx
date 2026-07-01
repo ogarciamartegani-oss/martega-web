@@ -46,6 +46,13 @@ export default function Layout() {
         </div>
         <div className="footer-meta">
           <span>© {new Date().getFullYear()} Martega</span>
+          <nav aria-label="Servicios">
+            <Link to="/servicios/mantenimiento">Mantenimiento</Link>
+            <Link to="/servicios/electricidad">Electricidad</Link>
+            <Link to="/servicios/fontaneria">Fontanería</Link>
+            <Link to="/servicios/climatizacion">Climatización</Link>
+            <Link to="/servicios/reformas">Reformas</Link>
+          </nav>
           <nav aria-label="Información legal">
             <Link to="/aviso-legal">Aviso legal</Link>
             <Link to="/privacidad">Privacidad</Link>

@@ -19,7 +19,10 @@ import {
   Wrench,
   Zap,
 } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { MapPin, BadgeCheck, Landmark } from 'lucide-react'
 import LeadForm from '../components/LeadForm.jsx'
+import Seo from '../components/Seo.jsx'
 import { company } from '../config.js'
 
 const audiences = [
@@ -30,10 +33,10 @@ const audiences = [
 ]
 
 const technicalServices = [
-  { icon: Zap, title: 'Electricidad', text: 'Averías, cuadros, iluminación, mecanismos e instalaciones.' },
-  { icon: Wrench, title: 'Fontanería', text: 'Fugas, grifería, sanitarios, tuberías y pequeñas reparaciones.' },
-  { icon: Snowflake, title: 'Climatización', text: 'Revisión, mantenimiento y mejora de equipos e instalaciones.' },
-  { icon: Lightbulb, title: 'Multiservicio', text: 'Albañilería, pintura y actuaciones coordinadas en un mismo parte.' },
+  { icon: Zap, title: 'Electricidad', text: 'Averías, cuadros, iluminación, mecanismos e instalaciones.', to: '/servicios/electricidad' },
+  { icon: Wrench, title: 'Fontanería', text: 'Fugas, grifería, sanitarios, tuberías y pequeñas reparaciones.', to: '/servicios/fontaneria' },
+  { icon: Snowflake, title: 'Climatización', text: 'Revisión, mantenimiento y mejora de equipos e instalaciones.', to: '/servicios/climatizacion' },
+  { icon: Lightbulb, title: 'Multiservicio', text: 'Albañilería, pintura y actuaciones coordinadas en un mismo parte.', to: '/servicios/mantenimiento' },
 ]
 
 const process = [
@@ -50,6 +53,11 @@ export default function HomePage() {
 
   return (
     <div className="market-home">
+      <Seo
+        title="Martega | Mantenimiento y reformas en Valencia"
+        description="Mantenimiento técnico y reformas para viviendas, negocios, comunidades e inmuebles en Valencia. Electricidad, fontanería, climatización y multiservicio."
+        path="/"
+      />
       <section className="market-hero">
         <div className="market-hero__media" aria-hidden="true">
           <img src="/hero-maintenance-v2.jpg" alt="" fetchPriority="high" />
@@ -126,11 +134,12 @@ export default function HomePage() {
           <p>Centralizamos los oficios habituales del inmueble y coordinamos las actuaciones que requieren varios profesionales.</p>
         </div>
         <div className="market-service-grid">
-          {technicalServices.map(({ icon: Icon, title, text }) => (
+          {technicalServices.map(({ icon: Icon, title, text, to }) => (
             <article key={title}>
               <Icon size={27} />
               <h3>{title}</h3>
               <p>{text}</p>
+              <Link className="market-service-link" to={to}>Ver servicio <ArrowRight size={13} /></Link>
             </article>
           ))}
         </div>
@@ -192,6 +201,39 @@ export default function HomePage() {
           <Clock3 size={28} />
           <strong>Prioridad real</strong>
           <span>según el impacto de la incidencia</span>
+        </div>
+      </section>
+
+      <section className="market-trust" id="empresa">
+        <div className="market-section-heading">
+          <p className="market-eyebrow"><span /> Quiénes somos</p>
+          <h2>Una empresa de Valencia,<br /><em>con nombre y apellidos.</em></h2>
+        </div>
+        <div className="market-trust-grid">
+          <article>
+            <Landmark size={26} />
+            <h3>Empresa registrada</h3>
+            <p>
+              Martega Instalaciones y Mantenimiento, S.L., con sede en el barrio de
+              Nazaret (València). Presupuesto por escrito y factura en cada trabajo.
+            </p>
+          </article>
+          <article>
+            <MapPin size={26} />
+            <h3>Zona de trabajo</h3>
+            <p>
+              València ciudad y área metropolitana: Mislata, Xirivella, Alboraia,
+              Burjassot, Paterna, Torrent y alrededores. Consulta otras zonas.
+            </p>
+          </article>
+          <article>
+            <BadgeCheck size={26} />
+            <h3>Cómo respondemos</h3>
+            <p>
+              Cada intervención queda documentada: qué se ha hecho, qué material se ha
+              usado y qué conviene vigilar. Sin letra pequeña ni trabajos a medias.
+            </p>
+          </article>
         </div>
       </section>
 

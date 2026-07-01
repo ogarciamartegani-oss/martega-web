@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
+import { LocalBusinessSchema } from './components/Seo.jsx'
 import Home from './pages/Home.jsx'
 import LegalNotice from './pages/LegalNotice.jsx'
 import Privacy from './pages/Privacy.jsx'
@@ -9,14 +10,16 @@ import Accessibility from './pages/Accessibility.jsx'
 import NotFound from './pages/NotFound.jsx'
 import ClientPortal from './pages/ClientPortal.jsx'
 import ClientAccess from './pages/ClientAccess.jsx'
+import ServicePage from './pages/services/ServicePage.jsx'
 
 function ScrollAndTitle() {
   const { pathname } = useLocation()
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
+    // Las páginas de servicio y la home gestionan su propio título vía <Seo />
+    if (pathname.startsWith('/servicios/') || pathname === '/') return
     const titles = {
-      '/': 'Martega | Mantenimiento y reformas en Valencia',
       '/aviso-legal': 'Aviso legal | Martega',
       '/privacidad': 'Política de privacidad | Martega',
       '/cookies': 'Política de cookies | Martega',
@@ -35,11 +38,13 @@ export default function App() {
   return (
     <>
       <ScrollAndTitle />
+      <LocalBusinessSchema />
       <Routes>
         <Route path="/cliente/:token" element={<ClientPortal />} />
         <Route path="/acceso" element={<ClientAccess />} />
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/servicios/:slug" element={<ServicePage />} />
           <Route path="/aviso-legal" element={<LegalNotice />} />
           <Route path="/privacidad" element={<Privacy />} />
           <Route path="/cookies" element={<Cookies />} />

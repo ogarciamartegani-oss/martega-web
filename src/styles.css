@@ -1475,3 +1475,47 @@ img { max-width: 100%; }
 @media (max-width: 480px) {
   .client-access-card { box-shadow: 9px 9px 0 #101a37; }
 }
+
+/* ─── ENLACES DE SERVICIO EN HOME ─── */
+.market-service-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; color: var(--mk-blue); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
+.market-service-link:hover { color: var(--mk-ink); }
+
+/* ─── SECCIÓN CONFIANZA (HOME) ─── */
+.market-trust { padding: clamp(85px, 10vw, 150px) clamp(24px, 7vw, 112px); background: #fff; }
+.market-trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.market-trust-grid article { padding: 32px 28px; border: 1px solid var(--mk-line); background: var(--mk-paper); }
+.market-trust-grid article > svg { color: var(--mk-blue); }
+.market-trust-grid h3 { margin: 22px 0 10px; font-size: 17px; letter-spacing: -.03em; }
+.market-trust-grid p { margin: 0; color: #5e665f; font-size: 12.5px; line-height: 1.7; }
+
+/* ─── PÁGINAS DE SERVICIO ─── */
+.service-hero { padding: clamp(70px, 9vw, 130px) clamp(24px, 7vw, 112px) clamp(55px, 7vw, 95px); color: #fff; background: var(--mk-ink); }
+.service-hero > svg { margin-bottom: 26px; color: var(--mk-lime); }
+.service-hero h1 { max-width: 900px; margin: 0 0 24px; font: 650 clamp(42px, 5.8vw, 82px)/.96 'Manrope', sans-serif; letter-spacing: -.06em; }
+.service-hero h1 em { color: var(--mk-lime); }
+.service-hero__lead { max-width: 640px; margin-bottom: 34px; color: #b9c0ba; font-size: clamp(15px, 1.3vw, 18px); line-height: 1.7; }
+.service-hero .market-button { border-color: rgba(255,255,255,.4); color: #fff; }
+.service-hero .market-button--primary { color: var(--mk-ink); background: var(--mk-lime); border-color: var(--mk-lime); }
+.service-hero .market-button--primary:hover { background: #fff; border-color: #fff; }
+
+.service-body { display: grid; grid-template-columns: 1.15fr .85fr; gap: 7vw; padding: clamp(80px, 9vw, 135px) clamp(24px, 7vw, 112px); }
+.service-body h2, .service-faqs h2 { margin: 0 0 34px; font: 650 clamp(36px, 4.2vw, 58px)/1 'Manrope', sans-serif; letter-spacing: -.05em; }
+.service-tasks ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--mk-line); }
+.service-tasks li { display: flex; align-items: baseline; gap: 12px; padding: 16px 4px; border-bottom: 1px solid var(--mk-line); color: #3c443d; font-size: 14px; line-height: 1.6; }
+.service-tasks li svg { flex: none; transform: translateY(2px); color: var(--mk-blue); }
+.service-for > p:not(.market-eyebrow) { margin: 0 0 40px; color: #5e665f; font-size: 14px; line-height: 1.8; }
+.service-others { display: flex; flex-direction: column; gap: 2px; }
+.service-others small { margin-bottom: 10px; color: #8a918b; font-size: 9px; font-weight: 700; letter-spacing: .14em; }
+.service-others a { display: flex; align-items: center; justify-content: space-between; padding: 13px 16px; background: #fff; border: 1px solid var(--mk-line); color: var(--mk-ink); font-size: 12px; font-weight: 700; text-decoration: none; transition: background .15s; }
+.service-others a:hover { background: var(--mk-lime); }
+
+.service-faqs { padding: clamp(80px, 9vw, 135px) clamp(24px, 7vw, 112px); background: #fff; }
+.service-faqs dl { max-width: 820px; margin: 0; border-top: 1px solid var(--mk-line); }
+.service-faqs dl > div { padding: 26px 4px; border-bottom: 1px solid var(--mk-line); }
+.service-faqs dt { margin-bottom: 10px; font-size: 16px; font-weight: 700; letter-spacing: -.02em; }
+.service-faqs dd { margin: 0; color: #5e665f; font-size: 13.5px; line-height: 1.75; }
+
+@media (max-width: 1050px) {
+  .market-trust-grid { grid-template-columns: 1fr; }
+  .service-body { grid-template-columns: 1fr; }
+}

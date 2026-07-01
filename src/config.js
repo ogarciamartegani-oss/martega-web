@@ -9,7 +9,7 @@ export const company = {
   email: import.meta.env.VITE_CONTACT_EMAIL || '',
   phone: cleanPhone(import.meta.env.VITE_CONTACT_PHONE),
   phoneDisplay: import.meta.env.VITE_CONTACT_PHONE_DISPLAY || '',
-  siteUrl: import.meta.env.VITE_PUBLIC_SITE_URL || 'https://www.martega.es',
+  siteUrl: import.meta.env.VITE_PUBLIC_SITE_URL || 'https://martega-web.vercel.app',
   privacyVersion: '2026-06-28',
 }
 
