@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
-import { HardHat, Menu, Phone, X } from 'lucide-react'
+import { HardHat, Menu, MessageCircle, Phone, X } from 'lucide-react'
 import Brand from './Brand.jsx'
 import CookieNotice from './CookieNotice.jsx'
 import { company } from '../config.js'
@@ -62,6 +62,16 @@ export default function Layout() {
           </nav>
         </div>
       </footer>
+      {company.phone && (
+        <div className="mobile-cta" role="navigation" aria-label="Contacto rápido">
+          <a href={`https://wa.me/${company.phone.replace('+', '')}?text=Hola%2C%20necesito%20ayuda%20con%20una%20incidencia`} className="mobile-cta__whatsapp">
+            <MessageCircle size={17} aria-hidden="true" /> WhatsApp
+          </a>
+          <a href={`tel:${company.phone}`} className="mobile-cta__phone">
+            <Phone size={17} aria-hidden="true" /> Llamar
+          </a>
+        </div>
+      )}
       <CookieNotice />
     </div>
   )

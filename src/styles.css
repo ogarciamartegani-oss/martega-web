@@ -1308,6 +1308,9 @@ img { max-width: 100%; }
     linear-gradient(0deg, rgba(11,14,11,.65) 0%, transparent 48%);
 }
 .market-hero__media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+/* <picture> no debe generar caja propia: el img se dimensiona contra el contenedor */
+.market-hero__media picture,
+.market-renovations__media picture { display: contents; }
 .market-hero__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(28,42,27,.15), rgba(38,52,231,.08)); mix-blend-mode: color; }
 .market-hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1.025); animation: market-image-in 1.8s cubic-bezier(.2,.7,.2,1) both; }
 .market-hero__copy { position: relative; z-index: 1; max-width: 790px; animation: market-copy-in 1s .18s cubic-bezier(.2,.7,.2,1) both; }
@@ -1518,4 +1521,58 @@ img { max-width: 100%; }
 @media (max-width: 1050px) {
   .market-trust-grid { grid-template-columns: 1fr; }
   .service-body { grid-template-columns: 1fr; }
+}
+
+/* ─── TRABAJOS RECIENTES ─── */
+.market-works { padding: clamp(85px, 10vw, 150px) clamp(24px, 7vw, 112px); background: #fff; }
+.market-works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.market-works-grid figure { margin: 0; }
+.market-works-grid img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.market-works-grid figcaption { display: flex; flex-direction: column; gap: 3px; padding: 14px 2px 0; }
+.market-works-grid figcaption span { color: var(--mk-blue); font-size: 9px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.market-works-grid figcaption strong { font-size: 14px; letter-spacing: -.02em; }
+.market-works-grid figcaption small { color: #7c837d; font-size: 11px; }
+
+/* ─── PORTAL DE CLIENTE ─── */
+.market-portal { display: grid; grid-template-columns: 1.1fr .9fr; gap: 7vw; align-items: center; padding: clamp(85px, 10vw, 150px) clamp(24px, 7vw, 112px); color: #fff; background: var(--mk-ink); }
+.market-portal h2 { margin: 22px 0 0; font: 650 clamp(34px, 4vw, 54px)/1.02 'Manrope', sans-serif; letter-spacing: -.05em; }
+.market-portal h2 em { color: var(--mk-lime); }
+.market-portal__copy > p:not(.market-eyebrow) { margin: 26px 0; max-width: 480px; color: rgba(255,255,255,.72); font-size: 13.5px; line-height: 1.75; }
+.market-portal__copy ul { margin: 0 0 30px; padding: 0; list-style: none; display: grid; gap: 10px; }
+.market-portal__copy li { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+.market-portal__copy li svg { color: var(--mk-lime); flex-shrink: 0; }
+.market-button--portal { color: var(--mk-ink); background: var(--mk-lime); border-color: var(--mk-lime); }
+.market-button--portal:hover { color: var(--mk-ink); background: #fff; border-color: #fff; }
+.market-portal__visual { display: flex; justify-content: center; }
+.market-portal__card { width: min(330px, 100%); padding: 26px; background: #fff; color: var(--mk-ink); border-top: 4px solid var(--mk-lime); box-shadow: 16px 16px 0 var(--mk-blue); display: grid; gap: 13px; }
+.market-portal__card > span { color: #7c837d; font-size: 8px; font-weight: 700; letter-spacing: .16em; }
+.market-portal__card > strong { font-size: 17px; letter-spacing: -.03em; }
+.market-portal__bar { height: 7px; background: var(--mk-paper); overflow: hidden; }
+.market-portal__bar i { display: block; width: 60%; height: 100%; background: var(--mk-blue); }
+.market-portal__card small { color: #5e665f; font-size: 11px; }
+.market-portal__row { display: flex; align-items: center; gap: 9px; padding-top: 11px; border-top: 1px solid var(--mk-line); font-size: 11.5px; font-weight: 600; }
+.market-portal__row svg { color: var(--mk-blue); }
+
+/* ─── FAQ HOME ─── */
+.market-faq { padding: clamp(85px, 10vw, 150px) clamp(24px, 7vw, 112px); background: var(--mk-paper); }
+.market-faq dl { max-width: 820px; margin: 0; border-top: 1px solid var(--mk-line); }
+.market-faq dl > div { padding: 26px 4px; border-bottom: 1px solid var(--mk-line); }
+.market-faq dt { margin-bottom: 10px; font-size: 16px; font-weight: 700; letter-spacing: -.02em; }
+.market-faq dd { margin: 0; max-width: 640px; color: #5e665f; font-size: 13.5px; line-height: 1.75; }
+
+/* ─── CTA FIJO MÓVIL ─── */
+.mobile-cta { position: fixed; bottom: 0; left: 0; right: 0; z-index: 40; display: none; grid-template-columns: 1fr 1fr; }
+.mobile-cta a { display: flex; align-items: center; justify-content: center; gap: 9px; padding: 15px 10px; font-size: 12px; font-weight: 700; text-decoration: none; }
+.mobile-cta__whatsapp { color: #fff; background: var(--green); }
+.mobile-cta__phone { color: #fff; background: var(--navy); }
+
+@media (max-width: 1050px) {
+  .market-portal { grid-template-columns: 1fr; }
+  .market-works-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .market-works-grid { grid-template-columns: 1fr; }
+  .mobile-cta { display: grid; }
+  .site-footer { padding-bottom: 88px; }
+  .market-portal__card { box-shadow: 10px 10px 0 var(--mk-blue); }
 }

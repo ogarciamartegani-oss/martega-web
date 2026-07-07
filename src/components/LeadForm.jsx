@@ -2,7 +2,12 @@ import { useRef, useState } from 'react'
 import { CheckCircle2, LoaderCircle, Send } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { company } from '../config.js'
-import { isSupabaseConfigured, supabase } from '../lib/supabase.js'
+
+// Supabase se importa dinámicamente en submit() para mantener
+// @supabase/supabase-js fuera del bundle inicial de la Home.
+const isSupabaseConfigured = Boolean(
+  import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY,
+)
 
 const initial = {
   nombre: '',
@@ -58,6 +63,7 @@ export default function LeadForm() {
       origen: 'web',
     }
 
+    const { supabase } = await import('../lib/supabase.js')
     const { error: insertError } = await supabase.from('solicitudes_web').insert(payload)
 
     if (insertError) {

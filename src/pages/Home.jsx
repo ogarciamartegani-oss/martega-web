@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   ArrowRight,
   Bath,
@@ -8,6 +9,7 @@ import {
   Hotel,
   Lightbulb,
   MessageCircle,
+  MonitorSmartphone,
   Phone,
   RefreshCw,
   Ruler,
@@ -24,6 +26,7 @@ import { MapPin, BadgeCheck, Landmark } from 'lucide-react'
 import LeadForm from '../components/LeadForm.jsx'
 import Seo from '../components/Seo.jsx'
 import { company } from '../config.js'
+import { works } from './worksData.js'
 
 const audiences = [
   { icon: Store, title: 'Locales y comercios', text: 'Incidencias resueltas sin alargar paradas ni coordinar varios gremios.' },
@@ -38,6 +41,49 @@ const technicalServices = [
   { icon: Snowflake, title: 'Climatización', text: 'Revisión, mantenimiento y mejora de equipos e instalaciones.', to: '/servicios/climatizacion' },
   { icon: Lightbulb, title: 'Multiservicio', text: 'Albañilería, pintura y actuaciones coordinadas en un mismo parte.', to: '/servicios/mantenimiento' },
 ]
+
+const homeFaqs = [
+  {
+    q: '¿En qué zonas trabajáis?',
+    a: 'En València ciudad y su área metropolitana: Mislata, Xirivella, Alboraia, Burjassot, Paterna, Torrent y alrededores. Si estás en otra zona cercana, consúltanos.',
+  },
+  {
+    q: '¿Atendéis averías urgentes?',
+    a: 'Sí. Atendemos urgencias las 24 horas. Cuéntanos la incidencia por WhatsApp o teléfono y valoramos la prioridad de inmediato.',
+  },
+  {
+    q: '¿El presupuesto tiene coste o compromiso?',
+    a: 'No. Valoramos la incidencia o el proyecto y te damos un presupuesto por escrito, sin compromiso. Cada trabajo se entrega con su factura.',
+  },
+  {
+    q: '¿Trabajáis solo para empresas o también para particulares?',
+    a: 'Trabajamos para negocios, comunidades de propietarios, gestores de inmuebles y también para particulares, tanto en mantenimiento como en reformas.',
+  },
+  {
+    q: '¿Cómo sé qué se ha hecho en mi obra o intervención?',
+    a: 'Cada cliente dispone de un portal online donde puede seguir su obra: estado, documentos y fotos del trabajo realizado, accesible desde el móvil en cualquier momento.',
+  },
+]
+
+function HomeFaqSchema() {
+  useEffect(() => {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: homeFaqs.map(({ q, a }) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    }
+    const script = document.createElement('script')
+    script.type = 'application/ld+json'
+    script.textContent = JSON.stringify(schema)
+    document.head.appendChild(script)
+    return () => script.remove()
+  }, [])
+  return null
+}
 
 const process = [
   { icon: TriangleAlert, number: '01', title: 'Recibimos la incidencia', text: 'Nos explicas qué ocurre y valoramos la prioridad.' },
@@ -55,12 +101,16 @@ export default function HomePage() {
     <div className="market-home">
       <Seo
         title="Martega | Mantenimiento y reformas en Valencia"
-        description="Mantenimiento técnico y reformas para viviendas, negocios, comunidades e inmuebles en Valencia. Electricidad, fontanería, climatización y multiservicio."
+        description="Mantenimiento técnico y reformas para viviendas, negocios, comunidades e inmuebles en Valencia. Urgencias 24h. Electricidad, fontanería, climatización y multiservicio."
         path="/"
       />
+      <HomeFaqSchema />
       <section className="market-hero">
         <div className="market-hero__media" aria-hidden="true">
-          <img src="/hero-maintenance-v2.jpg" alt="" fetchPriority="high" />
+          <picture>
+            <source srcSet="/hero-maintenance-v2.webp" type="image/webp" />
+            <img src="/hero-maintenance-v2.jpg" alt="" width="1672" height="941" fetchPriority="high" />
+          </picture>
         </div>
         <div className="market-hero__copy">
           <p className="market-eyebrow market-eyebrow--light"><span /> Mantenimiento técnico en Valencia</p>
@@ -80,6 +130,7 @@ export default function HomePage() {
             </a>
           </div>
           <div className="market-hero__trust">
+            <span><Check /> Urgencias 24h</span>
             <span><Check /> Un único interlocutor</span>
             <span><Check /> Presupuesto por escrito</span>
             <span><Check /> Valencia y alrededores</span>
@@ -113,7 +164,7 @@ export default function HomePage() {
           <p className="market-eyebrow market-eyebrow--light"><span /> Cuando algo falla</p>
           <TriangleAlert size={44} />
           <h2>Respuesta<br /><em>correctiva.</em></h2>
-          <p>Diagnosticamos, coordinamos el oficio y resolvemos la incidencia con un solo contacto.</p>
+          <p>Diagnosticamos, coordinamos el oficio y resolvemos la incidencia con un solo contacto. Averías urgentes atendidas las 24 horas.</p>
           {whatsapp && <a href={whatsapp}>Contar una incidencia <ArrowRight size={16} /></a>}
         </div>
         <div className="market-demand__light">
@@ -147,7 +198,10 @@ export default function HomePage() {
 
       <section className="market-renovations" id="reformas">
         <div className="market-renovations__media">
-          <img src="/reformas-editorial-v1.jpg" alt="Profesionales de Martega planificando una reforma integral" loading="lazy" />
+          <picture>
+            <source srcSet="/reformas-editorial-v1.webp" type="image/webp" />
+            <img src="/reformas-editorial-v1.jpg" alt="Profesionales de Martega planificando una reforma integral" width="1672" height="941" loading="lazy" />
+          </picture>
           <span>REFORMAS / VALENCIA</span>
         </div>
         <div className="market-renovations__content">
@@ -184,6 +238,72 @@ export default function HomePage() {
             </li>
           ))}
         </ol>
+      </section>
+
+      {works.length > 0 && (
+        <section className="market-works" id="trabajos">
+          <div className="market-section-heading">
+            <p className="market-eyebrow"><span /> Trabajos recientes</p>
+            <h2>Hecho por nosotros,<br /><em>en Valencia.</em></h2>
+          </div>
+          <div className="market-works-grid">
+            {works.map(({ image, alt, title, place, tag }) => (
+              <figure key={image}>
+                <img src={image} alt={alt} loading="lazy" />
+                <figcaption>
+                  <span>{tag}</span>
+                  <strong>{title}</strong>
+                  <small>{place}</small>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="market-portal" id="portal">
+        <div className="market-portal__copy">
+          <p className="market-eyebrow market-eyebrow--light"><span /> Portal de cliente</p>
+          <h2>Tu obra, en tu móvil.<br /><em>Sin llamar para preguntar.</em></h2>
+          <p>
+            Cada cliente dispone de un acceso privado donde ver el estado de su obra o
+            intervención: qué se ha hecho, fotos del trabajo y documentos. Transparencia
+            que ninguna otra empresa de mantenimiento en Valencia te ofrece.
+          </p>
+          <ul>
+            <li><Check size={15} /> Estado de la obra actualizado</li>
+            <li><Check size={15} /> Fotos y documentos en un solo sitio</li>
+            <li><Check size={15} /> Accesible desde cualquier dispositivo</li>
+          </ul>
+          <Link className="market-button market-button--portal" to="/acceso">
+            <MonitorSmartphone size={17} /> Acceder a mi obra
+          </Link>
+        </div>
+        <div className="market-portal__visual" aria-hidden="true">
+          <div className="market-portal__card">
+            <span>PORTAL DE CLIENTE</span>
+            <strong>Reforma en curso</strong>
+            <div className="market-portal__bar"><i /></div>
+            <small>Fase 3 de 5 · Instalaciones</small>
+            <div className="market-portal__row"><FileCheck2 size={14} /> Presupuesto aprobado</div>
+            <div className="market-portal__row"><Wrench size={14} /> Última visita: hoy</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="market-faq" id="preguntas">
+        <div className="market-section-heading">
+          <p className="market-eyebrow"><span /> Preguntas frecuentes</p>
+          <h2>Lo que nos preguntan<br /><em>antes de empezar.</em></h2>
+        </div>
+        <dl>
+          {homeFaqs.map(({ q, a }) => (
+            <div key={q}>
+              <dt>{q}</dt>
+              <dd>{a}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section className="market-proof">

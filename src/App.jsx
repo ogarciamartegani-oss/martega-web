@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Layout from './components/Layout.jsx'
 import { LocalBusinessSchema } from './components/Seo.jsx'
@@ -8,9 +8,12 @@ import Privacy from './pages/Privacy.jsx'
 import Cookies from './pages/Cookies.jsx'
 import Accessibility from './pages/Accessibility.jsx'
 import NotFound from './pages/NotFound.jsx'
-import ClientPortal from './pages/ClientPortal.jsx'
-import ClientAccess from './pages/ClientAccess.jsx'
 import ServicePage from './pages/services/ServicePage.jsx'
+
+// Portal de cliente en chunk aparte: arrastra @supabase/supabase-js
+// y no debe penalizar la carga inicial de la web pública.
+const ClientPortal = lazy(() => import('./pages/ClientPortal.jsx'))
+const ClientAccess = lazy(() => import('./pages/ClientAccess.jsx'))
 
 function ScrollAndTitle() {
   const { pathname } = useLocation()
@@ -40,8 +43,14 @@ export default function App() {
       <ScrollAndTitle />
       <LocalBusinessSchema />
       <Routes>
-        <Route path="/cliente/:token" element={<ClientPortal />} />
-        <Route path="/acceso" element={<ClientAccess />} />
+        <Route
+          path="/cliente/:token"
+          element={<Suspense fallback={null}><ClientPortal /></Suspense>}
+        />
+        <Route
+          path="/acceso"
+          element={<Suspense fallback={null}><ClientAccess /></Suspense>}
+        />
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/servicios/:slug" element={<ServicePage />} />
