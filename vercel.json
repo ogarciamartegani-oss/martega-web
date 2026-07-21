@@ -1,4 +1,8 @@
 {
+  "redirects": [
+    { "source": "/mantenimiento", "destination": "https://martega-app.vercel.app/mantenimiento", "permanent": false },
+    { "source": "/mantenimiento/(.*)", "destination": "https://martega-app.vercel.app/mantenimiento/$1", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],
