@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bar de la Piscina — Organizador de terraza</title>
+<style>
+  :root{
+    --agua:#0d7d75;
+    --agua-claro:#e6f4f2;
+    --agua-borde:#9ecfc9;
+    --arena:#faf6ef;
+    --coral:#e2622f;
+    --tinta:#1f2a2e;
+    --gris:#6b7a80;
+    --linea:#dfe4e2;
+    --blanco:#fff;
+    --alerta:#b23c17;
+    --alerta-bg:#fdeee7;
+    --ok:#2f7d32;
+    --ok-bg:#eaf5ea;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--tinta);
+    background:var(--arena);
+    font-size:15px;
+    line-height:1.45;
+  }
+  header{
+    background:var(--agua);
+    color:#fff;
+    padding:14px 20px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  header h1{font-size:18px;margin:0;font-weight:650;letter-spacing:.2px}
+  header .sub{font-size:12.5px;opacity:.8;margin-top:2px}
+  .acciones{display:flex;gap:8px;flex-wrap:wrap}
+  button{
+    font:inherit;
+    border:1px solid transparent;
+    border-radius:8px;
+    padding:8px 13px;
+    cursor:pointer;
+    background:var(--blanco);
+    color:var(--tinta);
+    font-size:13.5px;
+  }
+  button:hover{filter:brightness(.96)}
+  .btn-fantasma{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.35)}
+  .btn-principal{background:var(--coral);color:#fff}
+  .btn-peligro{background:var(--alerta-bg);color:var(--alerta);border-color:#f0c9b8}
+  .btn-mini{padding:4px 8px;font-size:12.5px}
+  nav{
+    display:flex;
+    gap:2px;
+    padding:0 20px;
+    background:var(--blanco);
+    border-bottom:1px solid var(--linea);
+    overflow-x:auto;
+  }
+  nav button{
+    border-radius:0;
+    background:transparent;
+    border-bottom:3px solid transparent;
+    padding:12px 16px;
+    color:var(--gris);
+    font-weight:550;
+    white-space:nowrap;
+  }
+  nav button.activa{color:var(--agua);border-bottom-color:var(--agua)}
+  main{padding:20px;max-width:1180px;margin:0 auto}
+  section.pestana{display:none}
+  section.pestana.activa{display:block}
+  .tarjeta{
+    background:var(--blanco);
+    border:1px solid var(--linea);
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:18px;
+  }
+  .tarjeta h2{font-size:15.5px;margin:0 0 4px;font-weight:650}
+  .tarjeta h3{font-size:13.5px;margin:18px 0 8px;font-weight:650;text-transform:uppercase;letter-spacing:.6px;color:var(--gris)}
+  .ayuda{font-size:13px;color:var(--gris);margin:0 0 14px}
+  label{display:block;font-size:12.5px;color:var(--gris);margin-bottom:4px;font-weight:550}
+  input,select,textarea{
+    font:inherit;
+    width:100%;
+    padding:8px 10px;
+    border:1px solid var(--linea);
+    border-radius:8px;
+    background:#fff;
+    color:var(--tinta);
+  }
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--agua-borde);outline-offset:-1px}
+  .rejilla{display:grid;gap:12px}
+  .r2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .r3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .r4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media(max-width:760px){.r3,.r4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:520px){.r2,.r3,.r4{grid-template-columns:1fr}}
+  .tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tabla-scroll table{min-width:700px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{
+    text-align:left;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    color:var(--gris);
+    padding:6px 8px;
+    border-bottom:1px solid var(--linea);
+    font-weight:650;
+  }
+  td{padding:5px 8px;border-bottom:1px solid var(--linea);vertical-align:middle}
+  td input,td select{padding:6px 8px;font-size:13.5px}
+  .barra-turno{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px}
+  .conmutador{display:inline-flex;border:1px solid var(--linea);border-radius:9px;overflow:hidden;background:#fff}
+  .conmutador button{border-radius:0;border:none;padding:9px 18px;color:var(--gris);font-weight:550}
+  .conmutador button.activa{background:var(--agua);color:#fff}
+  .avisos{margin:0 0 16px;padding:0;list-style:none;display:grid;gap:8px}
+  .avisos li{
+    padding:10px 12px;
+    border-radius:9px;
+    font-size:13.5px;
+    background:var(--alerta-bg);
+    color:var(--alerta);
+    border:1px solid #f2d3c5;
+  }
+  .avisos li.info{background:var(--agua-claro);color:#0a5a55;border-color:var(--agua-borde)}
+  .avisos li.ok{background:var(--ok-bg);color:var(--ok);border-color:#c3e0c4}
+  .marcadores{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .marcador{
+    background:var(--agua-claro);
+    border:1px solid var(--agua-borde);
+    border-radius:10px;
+    padding:9px 14px;
+    min-width:104px;
+  }
+  .marcador b{display:block;font-size:20px;line-height:1.15;color:#0a5a55}
+  .marcador span{font-size:11.5px;color:var(--gris);text-transform:uppercase;letter-spacing:.5px}
+  .bloques{display:flex;flex-wrap:wrap;gap:12px}
+  .bloque{
+    border:1px solid var(--linea);
+    border-radius:11px;
+    padding:11px 12px 12px;
+    background:#fff;
+    min-width:172px;
+  }
+  .bloque .cabecera{font-weight:650;font-size:14px;margin-bottom:1px}
+  .bloque .detalle{font-size:12.5px;color:var(--gris)}
+  .bloque .nota{font-size:12px;color:var(--coral);margin-top:4px}
+  .mesas-dibujo{display:flex;align-items:center;gap:4px;margin:9px 0 3px;flex-wrap:wrap}
+  .mesa{
+    width:46px;height:34px;
+    border:2px solid var(--agua);
+    background:var(--agua-claro);
+    display:flex;align-items:center;justify-content:center;
+    font-size:11.5px;font-weight:650;color:#0a5a55;
+  }
+  .mesa.redonda{border-radius:50%;width:38px;height:38px}
+  .mesa.cuadrada{border-radius:5px;width:36px;height:36px}
+  .mesa.rectangular{border-radius:5px;width:58px;height:34px}
+  .mesa.libre{border-color:var(--linea);background:#f6f7f7;color:var(--gris)}
+  .mesa.paso{border-color:var(--coral);background:#fdeee7;color:var(--coral)}
+  .union{color:var(--gris);font-size:15px;font-weight:700}
+  .leyenda{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--gris);margin-top:12px}
+  .leyenda span{display:flex;align-items:center;gap:6px}
+  .punto{width:12px;height:12px;border-radius:3px;border:2px solid var(--agua);background:var(--agua-claro)}
+  .punto.libre{border-color:var(--linea);background:#f6f7f7}
+  .punto.paso{border-color:var(--coral);background:#fdeee7}
+  .franjas{overflow-x:auto}
+  .franjas table{font-size:12px;min-width:520px}
+  .franjas th{padding:4px 3px;text-align:center;font-size:10.5px}
+  .franjas td{padding:0;border-bottom:1px solid #f0f2f1;text-align:center}
+  .franjas td.mesa-id{
+    padding:4px 8px;font-weight:650;white-space:nowrap;
+    text-align:left;background:#fafbfb;font-size:12px;
+  }
+  .celda{height:24px;font-size:10.5px;color:#0a4f4a;overflow:hidden;white-space:nowrap;padding:0 3px;border-right:1px solid #f0f2f1}
+  .vacio{background:#fff}
+  .rapido textarea{min-height:96px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+  .sin-datos{color:var(--gris);font-size:13.5px;padding:14px 0;text-align:center}
+  .pie{font-size:12px;color:var(--gris);text-align:center;padding:8px 20px 28px}
+  .fila-alerta td{background:var(--alerta-bg)}
+  @media print{
+    header,nav,.acciones,.no-imprimir{display:none!important}
+    body{background:#fff;font-size:12px}
+    main{padding:0;max-width:none}
+    .tarjeta{border:none;padding:0;margin-bottom:14px;break-inside:avoid}
+    .bloque{break-inside:avoid}
+    .tabla-scroll{overflow:visible}
+    .tabla-scroll table{min-width:0}
+    section.pestana{display:none!important}
+    section.pestana.activa{display:block!important}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Bar de la Piscina — Organizador de terraza</h1>
+    <div class="sub">Configura la terraza una vez. Cada servicio, escribe las reservas y te devuelve el reparto de mesas.</div>
+  </div>
+  <div class="acciones">
+    <button class="btn-fantasma" onclick="exportarJSON()">Exportar copia</button>
+    <button class="btn-fantasma" onclick="document.getElementById('archivo').click()">Importar copia</button>
+    <input type="file" id="archivo" accept="application/json" style="display:none" onchange="importarJSON(this)">
+  </div>
+</header>
+
+<nav>
+  <button id="tab-terraza" class="activa" onclick="verPestana('terraza')">1 · Mi terraza</button>
+  <button id="tab-reservas" onclick="verPestana('reservas')">2 · Reservas del día</button>
+  <button id="tab-plano" onclick="verPestana('plano')">3 · Plan de sala</button>
+</nav>
+
+<main>
+
+<!-- ══════════════ 1. TERRAZA ══════════════ -->
+<section id="terraza" class="pestana activa">
+  <div class="tarjeta">
+    <h2>Mobiliario de la terraza</h2>
+    <p class="ayuda">Esto se rellena una sola vez. Las plazas son las personas que caben cómodas en cada mesa suelta.</p>
+
+    <div class="tabla-scroll">
+    <table>
+      <thead><tr><th>Tipo de mesa</th><th style="width:130px">Cuántas</th><th style="width:130px">Plazas c/u</th><th>Se pueden juntar</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Redondas</b></td>
+          <td><input type="number" min="0" max="99" id="cfg-redonda-n"></td>
+          <td><input type="number" min="1" max="20" id="cfg-redonda-p"></td>
+          <td style="font-size:13px;color:var(--gris)">No — se usan siempre sueltas</td>
+        </tr>
+        <tr>
+          <td><b>Cuadradas</b></td>
+          <td><input type="number" min="0" max="99" id="cfg-cuadrada-n"></td>
+          <td><input type="number" min="1" max="20" id="cfg-cuadrada-p"></td>
+          <td style="font-size:13px;color:var(--gris)">Sí</td>
+        </tr>
+        <tr>
+          <td><b>Rectangulares</b></td>
+          <td><input type="number" min="0" max="99" id="cfg-rectangular-n"></td>
+          <td><input type="number" min="1" max="20" id="cfg-rectangular-p"></td>
+          <td style="font-size:13px;color:var(--gris)">Sí</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h3>Sillas y reglas de la casa</h3>
+    <div class="rejilla r4">
+      <div>
+        <label for="cfg-sillas">Sillas en total</label>
+        <input type="number" min="0" max="999" id="cfg-sillas">
+      </div>
+      <div>
+        <label for="cfg-perdida">Sillas que se pierden al unir 2 mesas</label>
+        <input type="number" min="0" max="6" id="cfg-perdida">
+      </div>
+      <div>
+        <label for="cfg-margen">Minutos para recoger entre turnos</label>
+        <input type="number" min="0" max="120" step="5" id="cfg-margen">
+      </div>
+      <div>
+        <label for="cfg-max-union">Máximo de mesas que puedes unir</label>
+        <input type="number" min="1" max="8" id="cfg-max-union">
+      </div>
+    </div>
+
+    <h3>Servicios</h3>
+    <div class="rejilla r4">
+      <div>
+        <label for="cfg-dur-mediodia">Duración media mediodía (min)</label>
+        <input type="number" min="30" max="300" step="15" id="cfg-dur-mediodia">
+      </div>
+      <div>
+        <label for="cfg-paso-mediodia">Mesas guardadas para gente sin reserva (mediodía)</label>
+        <input type="number" min="0" max="30" id="cfg-paso-mediodia">
+      </div>
+      <div>
+        <label for="cfg-dur-tarde">Duración media tarde (min)</label>
+        <input type="number" min="30" max="300" step="15" id="cfg-dur-tarde">
+      </div>
+      <div>
+        <label for="cfg-paso-tarde">Mesas guardadas para gente sin reserva (tarde)</label>
+        <input type="number" min="0" max="30" id="cfg-paso-tarde">
+      </div>
+    </div>
+
+    <div id="resumen-terraza" style="margin-top:18px"></div>
+    <div id="inventario-dibujo" style="margin-top:14px"></div>
+  </div>
+
+  <div class="tarjeta no-imprimir">
+    <h2>Datos guardados</h2>
+    <p class="ayuda">Todo se guarda en este ordenador (o móvil), en este navegador. Exporta una copia de vez en cuando.</p>
+    <div class="acciones">
+      <button class="btn-peligro" onclick="borrarTodo()">Borrar todos los datos</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 2. RESERVAS ══════════════ -->
+<section id="reservas" class="pestana">
+  <div class="tarjeta">
+    <div class="barra-turno">
+      <div>
+        <label for="fecha">Día</label>
+        <input type="date" id="fecha" style="width:auto" onchange="cambiarDia()">
+      </div>
+      <div>
+        <label>Servicio</label>
+        <div class="conmutador">
+          <button id="btn-mediodia" class="activa" onclick="cambiarTurno('mediodia')">Mediodía</button>
+          <button id="btn-tarde" onclick="cambiarTurno('tarde')">Tarde</button>
+        </div>
+      </div>
+      <div style="margin-left:auto" class="acciones">
+        <button onclick="anadirVacia()">+ Añadir reserva</button>
+        <button class="btn-principal" onclick="verPestana('plano')">Ver plan de sala →</button>
+      </div>
+    </div>
+
+    <div class="tabla-scroll">
+    <table id="tabla-reservas">
+      <thead>
+        <tr>
+          <th style="width:82px">Hora</th>
+          <th>Nombre</th>
+          <th style="width:74px">Pax</th>
+          <th style="width:110px">Teléfono</th>
+          <th>Nota (trona, sombra…)</th>
+          <th style="width:110px">Mesa fija</th>
+          <th style="width:84px">Min.</th>
+          <th style="width:40px"></th>
+        </tr>
+      </thead>
+      <tbody id="cuerpo-reservas"></tbody>
+    </table>
+    </div>
+    <div id="vacio-reservas" class="sin-datos">Todavía no hay reservas para este servicio.</div>
+  </div>
+
+  <div class="tarjeta rapido no-imprimir">
+    <h2>Añadir varias de golpe</h2>
+    <p class="ayuda">Una reserva por línea, tal cual las apuntas. Ejemplos: <code>13:30 Familia Ruiz 6</code> · <code>14h Peña El Chapuzón 12 tel 600112233</code></p>
+    <textarea id="texto-rapido" placeholder="13:00 Carmen Solís 4&#10;13:30 Familia Ruiz 6&#10;14:00 Peña El Chapuzón 12"></textarea>
+    <div class="acciones" style="margin-top:10px">
+      <button class="btn-principal" onclick="procesarRapido()">Añadir al servicio</button>
+      <span id="aviso-rapido" style="font-size:13px;color:var(--gris);align-self:center"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 3. PLANO ══════════════ -->
+<section id="plano" class="pestana">
+  <div class="tarjeta">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div>
+        <h2 id="titulo-plan">Plan de sala</h2>
+        <p class="ayuda" id="sub-plan"></p>
+      </div>
+      <div class="acciones no-imprimir">
+        <button onclick="verPestana('reservas')">← Editar reservas</button>
+        <button class="btn-principal" onclick="window.print()">Imprimir para el office</button>
+      </div>
+    </div>
+    <div id="marcadores-plan" class="marcadores"></div>
+    <ul id="avisos-plan" class="avisos"></ul>
+    <div id="bloques-plan" class="bloques"></div>
+    <div class="leyenda no-imprimir">
+      <span><i class="punto"></i> Mesa asignada</span>
+      <span><i class="punto libre"></i> Mesa libre todo el servicio</span>
+      <span><i class="punto paso"></i> Guardada para gente sin reserva</span>
+    </div>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Reparto por mesa</h2>
+    <p class="ayuda">Quién ocupa cada mesa y a qué hora. Una mesa puede dar dos turnos si da tiempo a recogerla.</p>
+    <div class="franjas" id="franjas-plan"></div>
+  </div>
+
+  <div class="tarjeta">
+    <h2>Hoja de servicio</h2>
+    <div class="tabla-scroll">
+    <table>
+      <thead><tr><th style="width:70px">Hora</th><th>Nombre</th><th style="width:60px">Pax</th><th style="width:150px">Mesa(s)</th><th>Nota</th></tr></thead>
+      <tbody id="hoja-servicio"></tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="pie">Bar de la Piscina · herramienta local, sin internet ni cuentas · los datos viven en este navegador</div>
+
+<script>
+"use strict";
+
+/* ───────────────────────── Datos ───────────────────────── */
+
+const CLAVE = "barPiscina.v1";
+
+const PREDETERMINADO = {
+  config: {
+    mesas: {
+      redonda:     { n: 6, plazas: 4 },
+      cuadrada:    { n: 8, plazas: 4 },
+      rectangular: { n: 4, plazas: 6 }
+    },
+    sillas: 70,
+    perdidaUnion: 2,
+    margenLimpieza: 20,
+    maxUnion: 4,
+    servicios: {
+      mediodia: { duracion: 105, mesasPaso: 2 },
+      tarde:    { duracion: 120, mesasPaso: 2 }
+    }
+  },
+  dias: {}
+};
+
+let datos = cargar();
+let fechaActual = hoyISO();
+let turnoActual = "mediodia";
+
+function cargar() {
+  try {
+    const bruto = localStorage.getItem(CLAVE);
+    if (!bruto) return estructuraInicial();
+    const guardado = JSON.parse(bruto);
+    return {
+      config: Object.assign({}, PREDETERMINADO.config, guardado.config || {}, {
+        mesas: Object.assign({}, PREDETERMINADO.config.mesas, (guardado.config || {}).mesas || {}),
+        servicios: Object.assign({}, PREDETERMINADO.config.servicios, (guardado.config || {}).servicios || {})
+      }),
+      dias: guardado.dias || {}
+    };
+  } catch (e) {
+    console.warn("No se pudo leer lo guardado:", e);
+    return estructuraInicial();
+  }
+}
+
+function estructuraInicial() {
+  const base = JSON.parse(JSON.stringify(PREDETERMINADO));
+  base.dias[hoyISO()] = {
+    mediodia: [
+      { id: id(), hora: "13:00", nombre: "Carmen Solís",      pax: 4,  tel: "", nota: "",                 fijas: "", dur: null },
+      { id: id(), hora: "13:30", nombre: "Familia Ruiz",      pax: 6,  tel: "", nota: "Trona para el peque", fijas: "", dur: null },
+      { id: id(), hora: "14:00", nombre: "Peña El Chapuzón",  pax: 12, tel: "", nota: "Cumpleaños",        fijas: "", dur: null },
+      { id: id(), hora: "14:15", nombre: "Pareja Domínguez",  pax: 2,  tel: "", nota: "",                 fijas: "", dur: null },
+      { id: id(), hora: "15:00", nombre: "Grupo natación",    pax: 9,  tel: "", nota: "Sombra",           fijas: "", dur: null }
+    ],
+    tarde: []
+  };
+  return base;
+}
+
+function guardar() {
+  try {
+    localStorage.setItem(CLAVE, JSON.stringify(datos));
+  } catch (e) {
+    alert("No se han podido guardar los datos en este navegador.");
+  }
+}
+
+function id() { return "r" + Math.random().toString(36).slice(2, 9); }
+function hoyISO() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+
+function reservasDe(fecha, turno) {
+  if (!datos.dias[fecha]) datos.dias[fecha] = { mediodia: [], tarde: [] };
+  if (!datos.dias[fecha][turno]) datos.dias[fecha][turno] = [];
+  return datos.dias[fecha][turno];
+}
+
+/* ───────────────────────── Utilidades de hora ───────────────────────── */
+
+function aMinutos(hhmm) {
+  if (!hhmm) return null;
+  const m = String(hhmm).match(/^(\d{1,2}):(\d{2})$/);
+  if (!m) return null;
+  const h = +m[1], min = +m[2];
+  if (h > 23 || min > 59) return null;
+  return h * 60 + min;
+}
+function aHora(min) {
+  min = ((min % 1440) + 1440) % 1440;
+  return String(Math.floor(min / 60)).padStart(2, "0") + ":" + String(min % 60).padStart(2, "0");
+}
+
+/* ───────────────────────── Inventario de mesas ───────────────────────── */
+
+const PREFIJO = { redonda: "R", cuadrada: "C", rectangular: "L" };
+const ETIQUETA = { redonda: "redonda", cuadrada: "cuadrada", rectangular: "rectangular" };
+const UNIBLE = { redonda: false, cuadrada: true, rectangular: true };
+
+function inventario() {
+  const lista = [];
+  ["redonda", "cuadrada", "rectangular"].forEach(tipo => {
+    const cfg = datos.config.mesas[tipo];
+    const cantidad = Math.max(0, Math.floor(Number(cfg.n) || 0));
+    const plazas = Math.max(1, Math.floor(Number(cfg.plazas) || 1));
+    for (let i = 1; i <= cantidad; i++) {
+      lista.push({ id: PREFIJO[tipo] + i, tipo: tipo, plazas: plazas, unible: UNIBLE[tipo] });
+    }
+  });
+  return lista;
+}
+
+/* Mesas que se guardan para clientes sin reserva: las más pequeñas primero. */
+function mesasParaPaso(turno) {
+  const cuantas = Math.max(0, Math.floor(Number(datos.config.servicios[turno].mesasPaso) || 0));
+  if (!cuantas) return [];
+  const orden = inventario().slice().sort((a, b) =>
+    a.plazas - b.plazas || (a.unible === b.unible ? 0 : a.unible ? 1 : -1)
+  );
+  return orden.slice(0, cuantas).map(m => m.id);
+}
+
+/* ───────────────────────── El reparto ───────────────────────── */
+
+function planificar(fecha, turno) {
+  const cfg = datos.config;
+  const durTurno = Math.max(15, Number(cfg.servicios[turno].duracion) || 105);
+  const margen = Math.max(0, Number(cfg.margenLimpieza) || 0);
+  const perdida = Math.max(0, Number(cfg.perdidaUnion) || 0);
+  const maxUnion = Math.max(1, Math.min(8, Number(cfg.maxUnion) || 4));
+
+  const mesas = inventario();
+  const reservadasPaso = mesasParaPaso(turno);
+  const disponibles = mesas.filter(m => reservadasPaso.indexOf(m.id) === -1);
+
+  // ocupacion[mesaId] = [{ini, fin, finBloqueo, res}]
+  const ocupacion = {};
+  mesas.forEach(m => { ocupacion[m.id] = []; });
+
+  const crudas = reservasDe(fecha, turno);
+  const items = [];
+  const avisos = [];
+
+  crudas.forEach(r => {
+    const pax = Math.max(1, Math.floor(Number(r.pax) || 0));
+    const ini = aMinutos(r.hora);
+    const dur = Math.max(15, Number(r.dur) || durTurno);
+    if (ini === null) {
+      avisos.push({ tipo: "aviso", texto: "«" + (r.nombre || "sin nombre") + "» no tiene una hora válida (formato 13:30). No entra en el reparto." });
+      return;
+    }
+    if (!Number(r.pax)) {
+      avisos.push({ tipo: "aviso", texto: "«" + (r.nombre || "sin nombre") + "» no tiene número de personas. No entra en el reparto." });
+      return;
+    }
+    items.push({ ref: r, pax: pax, ini: ini, fin: ini + dur, finBloqueo: ini + dur + margen, mesas: [], motivo: "" });
+  });
+
+  function libre(mesaId, ini, finBloqueo) {
+    return ocupacion[mesaId].every(t => finBloqueo <= t.ini || ini >= t.finBloqueo);
+  }
+  function ocupar(item, mesaId) {
+    ocupacion[mesaId].push({ ini: item.ini, fin: item.fin, finBloqueo: item.finBloqueo, res: item });
+    item.mesas.push(mesaId);
+  }
+
+  // Paso 1 — mesas fijadas a mano, mandan sobre todo lo demás.
+  items.forEach(item => {
+    const pedidas = String(item.ref.fijas || "").toUpperCase().split(/[\s,;.+/-]+/).filter(Boolean);
+    if (!pedidas.length) return;
+    let plazas = 0;
+    pedidas.forEach(codigo => {
+      const mesa = mesas.find(m => m.id === codigo);
+      if (!mesa) {
+        avisos.push({ tipo: "aviso", texto: "«" + item.ref.nombre + "»: la mesa " + codigo + " no existe en tu terraza." });
+        return;
+      }
+      if (!libre(mesa.id, item.ini, item.finBloqueo)) {
+        avisos.push({ tipo: "aviso", texto: "«" + item.ref.nombre + "»: la mesa " + mesa.id + " ya está pillada a esa hora. La he asignado igual porque la fijaste tú." });
+      }
+      ocupar(item, mesa.id);
+      plazas += mesa.plazas;
+    });
+    if (item.mesas.length) {
+      plazas -= perdida * (item.mesas.length - 1);
+      item.motivo = "Mesa fijada a mano";
+      if (plazas < item.pax) {
+        avisos.push({ tipo: "aviso", texto: "«" + item.ref.nombre + "» (" + item.pax + " pax) va en " + item.mesas.join("+") + ", que da para " + plazas + ". Faltan sitios." });
+      }
+    }
+  });
+
+  // Paso 2 — el resto: primero los grupos grandes, que son los que peor encajan.
+  const pendientes = items.filter(i => !i.mesas.length)
+    .sort((a, b) => b.pax - a.pax || a.ini - b.ini);
+
+  pendientes.forEach(item => {
+    const libres = disponibles.filter(m => libre(m.id, item.ini, item.finBloqueo));
+
+    // 2a. ¿Cabe en una sola mesa? La que menos sitio desperdicie.
+    let mejorSuelta = null;
+    libres.forEach(m => {
+      if (m.plazas < item.pax) return;
+      const sobra = m.plazas - item.pax;
+      // A igualdad, gasta antes la mesa que NO se puede unir: las unibles hacen falta para los grupos grandes.
+      const puntos = [sobra, m.unible ? 1 : 0];
+      if (!mejorSuelta || menor(puntos, mejorSuelta.puntos)) mejorSuelta = { mesa: m, puntos: puntos };
+    });
+    if (mejorSuelta) {
+      ocupar(item, mejorSuelta.mesa.id);
+      item.motivo = "Mesa " + ETIQUETA[mejorSuelta.mesa.tipo] + " de " + mejorSuelta.mesa.plazas;
+      return;
+    }
+
+    // 2b. Unir mesas. Solo cuadradas y rectangulares.
+    const porTipo = {
+      cuadrada: libres.filter(m => m.tipo === "cuadrada"),
+      rectangular: libres.filter(m => m.tipo === "rectangular")
+    };
+    const plazasDe = { cuadrada: 0, rectangular: 0 };
+    ["cuadrada", "rectangular"].forEach(t => { if (porTipo[t].length) plazasDe[t] = porTipo[t][0].plazas; });
+
+    let mejorCombo = null;
+    const topeC = Math.min(porTipo.cuadrada.length, maxUnion);
+    const topeR = Math.min(porTipo.rectangular.length, maxUnion);
+    for (let a = 0; a <= topeC; a++) {
+      for (let b = 0; b <= topeR; b++) {
+        const k = a + b;
+        if (k < 2 || k > maxUnion) continue;
+        const plazas = a * plazasDe.cuadrada + b * plazasDe.rectangular - perdida * (k - 1);
+        if (plazas < item.pax) continue;
+        // menos sitio desperdiciado → menos mesas → mejor del mismo tipo (queda más recto)
+        const puntos = [plazas - item.pax, k, (a > 0 && b > 0) ? 1 : 0];
+        if (!mejorCombo || menor(puntos, mejorCombo.puntos)) {
+          mejorCombo = { a: a, b: b, plazas: plazas, puntos: puntos };
+        }
+      }
+    }
+    if (mejorCombo) {
+      porTipo.cuadrada.slice(0, mejorCombo.a).forEach(m => ocupar(item, m.id));
+      porTipo.rectangular.slice(0, mejorCombo.b).forEach(m => ocupar(item, m.id));
+      item.motivo = "Unir " + item.mesas.length + " mesas (" + mejorCombo.plazas + " sitios)";
+      return;
+    }
+
+    // 2c. No hay manera.
+    const cabenSueltas = libres.filter(m => m.plazas >= item.pax).length;
+    item.motivo = libres.length === 0
+      ? "No queda ninguna mesa libre a esa hora"
+      : (cabenSueltas === 0 && item.pax > mayorGrupoPosible(libres, perdida, maxUnion)
+          ? "El grupo es más grande de lo que dan las mesas libres a esa hora"
+          : "No hay combinación posible a esa hora");
+  });
+
+  // Avisos de sillas y de aforo.
+  const asignados = items.filter(i => i.mesas.length);
+  const sinMesa = items.filter(i => !i.mesas.length);
+  const pico = picoSimultaneo(items);
+  const picoSentado = picoSimultaneo(asignados);
+  const sillas = Math.max(0, Number(cfg.sillas) || 0);
+
+  if (picoSentado > sillas) {
+    avisos.push({ tipo: "aviso", texto: "Te faltan sillas: a la vez llegas a " + picoSentado + " personas sentadas y tienes " + sillas + " sillas." });
+  } else if (pico > sillas) {
+    avisos.push({ tipo: "aviso", texto: "Con todas las reservas sentadas harían falta " + pico + " sillas y tienes " + sillas + "." });
+  }
+  sinMesa.forEach(i => {
+    avisos.push({ tipo: "aviso", texto: "SIN MESA · " + i.ref.nombre + " (" + i.pax + " pax, " + i.ref.hora + "): " + i.motivo + "." });
+  });
+  if (!items.length) {
+    avisos.push({ tipo: "info", texto: "Aún no has metido reservas para este servicio." });
+  } else if (!sinMesa.length) {
+    avisos.push({ tipo: "ok", texto: "Todas las reservas tienen mesa. " + asignados.length + " grupos, " + asignados.reduce((s, i) => s + i.pax, 0) + " personas." });
+  }
+
+  const mesasUsadas = {};
+  items.forEach(i => i.mesas.forEach(m => { mesasUsadas[m] = true; }));
+
+  return {
+    items: items.slice().sort((a, b) => a.ini - b.ini || a.ref.nombre.localeCompare(b.ref.nombre)),
+    asignados: asignados,
+    sinMesa: sinMesa,
+    ocupacion: ocupacion,
+    mesas: mesas,
+    reservadasPaso: reservadasPaso,
+    libresTodoElTurno: mesas.filter(m => !mesasUsadas[m.id] && reservadasPaso.indexOf(m.id) === -1).map(m => m.id),
+    avisos: avisos,
+    pico: pico,
+    picoSentado: picoSentado
+  };
+}
+
+function menor(a, b) {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) return a[i] < b[i];
+  }
+  return false;
+}
+
+function mayorGrupoPosible(libres, perdida, maxUnion) {
+  const unibles = libres.filter(m => m.unible).sort((a, b) => b.plazas - a.plazas).slice(0, maxUnion);
+  const sueltaMayor = libres.reduce((mx, m) => Math.max(mx, m.plazas), 0);
+  if (unibles.length < 2) return sueltaMayor;
+  const unidas = unibles.reduce((s, m) => s + m.plazas, 0) - perdida * (unibles.length - 1);
+  return Math.max(sueltaMayor, unidas);
+}
+
+function picoSimultaneo(items) {
+  const eventos = [];
+  items.forEach(i => { eventos.push([i.ini, i.pax]); eventos.push([i.fin, -i.pax]); });
+  eventos.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  let actual = 0, pico = 0;
+  eventos.forEach(e => { actual += e[1]; if (actual > pico) pico = actual; });
+  return pico;
+}
+
+/* ───────────────────────── Pintar: configuración ───────────────────────── */
+
+const CAMPOS_CFG = [
+  ["cfg-redonda-n",      d => d.config.mesas.redonda.n,              (d, v) => d.config.mesas.redonda.n = v],
+  ["cfg-redonda-p",      d => d.config.mesas.redonda.plazas,         (d, v) => d.config.mesas.redonda.plazas = v],
+  ["cfg-cuadrada-n",     d => d.config.mesas.cuadrada.n,             (d, v) => d.config.mesas.cuadrada.n = v],
+  ["cfg-cuadrada-p",     d => d.config.mesas.cuadrada.plazas,        (d, v) => d.config.mesas.cuadrada.plazas = v],
+  ["cfg-rectangular-n",  d => d.config.mesas.rectangular.n,          (d, v) => d.config.mesas.rectangular.n = v],
+  ["cfg-rectangular-p",  d => d.config.mesas.rectangular.plazas,     (d, v) => d.config.mesas.rectangular.plazas = v],
+  ["cfg-sillas",         d => d.config.sillas,                       (d, v) => d.config.sillas = v],
+  ["cfg-perdida",        d => d.config.perdidaUnion,                 (d, v) => d.config.perdidaUnion = v],
+  ["cfg-margen",         d => d.config.margenLimpieza,               (d, v) => d.config.margenLimpieza = v],
+  ["cfg-max-union",      d => d.config.maxUnion,                     (d, v) => d.config.maxUnion = v],
+  ["cfg-dur-mediodia",   d => d.config.servicios.mediodia.duracion,  (d, v) => d.config.servicios.mediodia.duracion = v],
+  ["cfg-paso-mediodia",  d => d.config.servicios.mediodia.mesasPaso, (d, v) => d.config.servicios.mediodia.mesasPaso = v],
+  ["cfg-dur-tarde",      d => d.config.servicios.tarde.duracion,     (d, v) => d.config.servicios.tarde.duracion = v],
+  ["cfg-paso-tarde",     d => d.config.servicios.tarde.mesasPaso,    (d, v) => d.config.servicios.tarde.mesasPaso = v]
+];
+
+function pintarConfig() {
+  CAMPOS_CFG.forEach(([idCampo, leer]) => {
+    const el = document.getElementById(idCampo);
+    el.value = leer(datos);
+    el.oninput = null;
+  });
+  CAMPOS_CFG.forEach(([idCampo, , escribir]) => {
+    document.getElementById(idCampo).oninput = function () {
+      escribir(datos, Number(this.value));
+      guardar();
+      pintarResumenTerraza();
+      pintarPlan();
+    };
+  });
+  pintarResumenTerraza();
+}
+
+function pintarResumenTerraza() {
+  const mesas = inventario();
+  const plazas = mesas.reduce((s, m) => s + m.plazas, 0);
+  const sillas = Math.max(0, Number(datos.config.sillas) || 0);
+  const unibles = mesas.filter(m => m.unible);
+  const perdida = Math.max(0, Number(datos.config.perdidaUnion) || 0);
+  const maxUnion = Math.max(1, Number(datos.config.maxUnion) || 4);
+  const grupoMax = mayorGrupoPosible(mesas, perdida, maxUnion);
+
+  document.getElementById("resumen-terraza").innerHTML =
+    '<div class="marcadores">' +
+      marcador(mesas.length, "Mesas") +
+      marcador(plazas, "Plazas sentadas") +
+      marcador(sillas, "Sillas") +
+      marcador(unibles.length, "Mesas unibles") +
+      marcador(grupoMax, "Grupo más grande") +
+    "</div>" +
+    (sillas < plazas
+      ? '<ul class="avisos"><li>Tienes ' + plazas + " plazas de mesa pero solo " + sillas + " sillas. El tope real de la terraza son las sillas.</li></ul>"
+      : "") +
+    (mesas.length === 0
+      ? '<ul class="avisos"><li>No has puesto ninguna mesa todavía.</li></ul>'
+      : "");
+
+  document.getElementById("inventario-dibujo").innerHTML =
+    '<h3 style="margin-top:0">Tus mesas</h3><div class="mesas-dibujo">' +
+    mesas.map(m => dibujarMesa(m, "libre")).join("") +
+    "</div>";
+}
+
+function marcador(valor, texto) {
+  return '<div class="marcador"><b>' + valor + "</b><span>" + texto + "</span></div>";
+}
+
+function dibujarMesa(mesa, clase) {
+  return '<div class="mesa ' + mesa.tipo + (clase ? " " + clase : "") + '" title="' +
+    mesa.id + " · " + ETIQUETA[mesa.tipo] + " · " + mesa.plazas + ' plazas">' + mesa.id + "</div>";
+}
+
+/* ───────────────────────── Pintar: reservas ───────────────────────── */
+
+function pintarReservas() {
+  document.getElementById("fecha").value = fechaActual;
+  document.getElementById("btn-mediodia").classList.toggle("activa", turnoActual === "mediodia");
+  document.getElementById("btn-tarde").classList.toggle("activa", turnoActual === "tarde");
+
+  const lista = reservasDe(fechaActual, turnoActual).slice().sort(ordenarPorHora);
+  datos.dias[fechaActual][turnoActual] = lista;
+
+  const cuerpo = document.getElementById("cuerpo-reservas");
+  cuerpo.innerHTML = lista.map(r =>
+    '<tr data-id="' + r.id + '">' +
+      td(campo(r, "hora", "time")) +
+      td(campo(r, "nombre", "text", "A nombre de…")) +
+      td(campo(r, "pax", "number")) +
+      td(campo(r, "tel", "tel")) +
+      td(campo(r, "nota", "text")) +
+      td(campo(r, "fijas", "text", "ej. L1,L2")) +
+      td(campo(r, "dur", "number", "auto")) +
+      td('<button class="btn-mini btn-peligro" onclick="borrarReserva(\'' + r.id + '\')" title="Borrar">✕</button>') +
+    "</tr>"
+  ).join("");
+
+  document.getElementById("vacio-reservas").style.display = lista.length ? "none" : "block";
+
+  cuerpo.querySelectorAll("input").forEach(el => {
+    el.oninput = function () {
+      const fila = this.closest("tr");
+      const reserva = reservasDe(fechaActual, turnoActual).find(x => x.id === fila.dataset.id);
+      if (!reserva) return;
+      const campo = this.dataset.campo;
+      if (campo === "pax") reserva.pax = this.value === "" ? "" : Number(this.value);
+      else if (campo === "dur") reserva.dur = this.value === "" ? null : Number(this.value);
+      else reserva[campo] = this.value;
+      guardar();
+      pintarPlan();
+    };
+  });
+}
+
+function ordenarPorHora(a, b) {
+  const ma = aMinutos(a.hora), mb = aMinutos(b.hora);
+  if (ma === null && mb === null) return 0;
+  if (ma === null) return 1;
+  if (mb === null) return -1;
+  return ma - mb;
+}
+
+function td(html) { return "<td>" + html + "</td>"; }
+
+function campo(r, nombre, tipo, marcador) {
+  const valor = r[nombre] === null || r[nombre] === undefined ? "" : r[nombre];
+  return '<input type="' + tipo + '" data-campo="' + nombre + '" value="' + escapar(String(valor)) + '"' +
+    (marcador ? ' placeholder="' + escapar(marcador) + '"' : "") +
+    (tipo === "number" ? ' min="1"' : "") + ">";
+}
+
+function escapar(s) {
+  return s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function anadirVacia() {
+  reservasDe(fechaActual, turnoActual).push({
+    id: id(),
+    hora: turnoActual === "mediodia" ? "14:00" : "20:30",
+    nombre: "", pax: "", tel: "", nota: "", fijas: "", dur: null
+  });
+  guardar();
+  pintarReservas();
+  pintarPlan();
+  const filas = document.querySelectorAll("#cuerpo-reservas tr");
+  if (filas.length) {
+    const ultimo = filas[filas.length - 1].querySelector('input[data-campo="nombre"]');
+    if (ultimo) ultimo.focus();
+  }
+}
+
+function borrarReserva(idReserva) {
+  const lista = reservasDe(fechaActual, turnoActual);
+  const i = lista.findIndex(r => r.id === idReserva);
+  if (i >= 0) lista.splice(i, 1);
+  guardar();
+  pintarReservas();
+  pintarPlan();
+}
+
+function cambiarDia() {
+  fechaActual = document.getElementById("fecha").value || hoyISO();
+  pintarReservas();
+  pintarPlan();
+}
+
+function cambiarTurno(turno) {
+  turnoActual = turno;
+  pintarReservas();
+  pintarPlan();
+}
+
+/* ───────────────────────── Añadir varias de golpe ───────────────────────── */
+
+function procesarRapido() {
+  const texto = document.getElementById("texto-rapido").value;
+  const lineas = texto.split("\n").map(l => l.trim()).filter(Boolean);
+  let anadidas = 0, fallidas = [];
+
+  lineas.forEach(linea => {
+    const r = interpretarLinea(linea);
+    if (r) { reservasDe(fechaActual, turnoActual).push(r); anadidas++; }
+    else fallidas.push(linea);
+  });
+
+  guardar();
+  pintarReservas();
+  pintarPlan();
+  document.getElementById("texto-rapido").value = fallidas.join("\n");
+  document.getElementById("aviso-rapido").textContent =
+    anadidas + (anadidas === 1 ? " reserva añadida" : " reservas añadidas") +
+    (fallidas.length ? " · " + fallidas.length + " línea(s) sin entender (faltan hora o personas)" : "");
+}
+
+function interpretarLinea(linea) {
+  let resto = linea;
+
+  // Teléfono: 9 dígitos seguidos (o con espacios), lo saco antes que nada.
+  let tel = "";
+  const mTel = resto.match(/(?:tel\.?|tlf\.?|móvil|movil)?\s*((?:\+34[\s-]?)?\d{3}[\s.-]?\d{2}[\s.-]?\d{2}[\s.-]?\d{2})/i);
+  if (mTel) { tel = mTel[1].replace(/[\s.-]/g, ""); resto = resto.replace(mTel[0], " "); }
+
+  // Hora: 13:30 · 13.30 · 13h · 13 h
+  let hora = null;
+  const mHora = resto.match(/\b(\d{1,2})\s*(?::|\.|h)\s*(\d{2})?\b/i);
+  if (mHora) {
+    const h = +mHora[1], min = mHora[2] ? +mHora[2] : 0;
+    if (h <= 23 && min <= 59) { hora = aHora(h * 60 + min); resto = resto.replace(mHora[0], " "); }
+  }
+  if (!hora) return null;
+
+  // Personas: número suelto de 1 a 2 cifras, con o sin "pax"/"personas"
+  let pax = null;
+  const mPax = resto.match(/\b(\d{1,2})\s*(?:pax|personas|per|p\.?)?\b/i);
+  if (mPax) { pax = +mPax[1]; resto = resto.replace(mPax[0], " "); }
+  if (!pax) return null;
+
+  const nombre = resto.replace(/\b(tel\.?|tlf\.?|móvil|movil|pax|personas)\b/gi, " ")
+                      .replace(/[·|,;:\-–—]+/g, " ")
+                      .replace(/\s+/g, " ")
+                      .trim();
+
+  return { id: id(), hora: hora, nombre: nombre || "Sin nombre", pax: pax, tel: tel, nota: "", fijas: "", dur: null };
+}
+
+/* ───────────────────────── Pintar: plan ───────────────────────── */
+
+function pintarPlan() {
+  const plan = planificar(fechaActual, turnoActual);
+  const nombreTurno = turnoActual === "mediodia" ? "Mediodía" : "Tarde";
+
+  document.getElementById("titulo-plan").textContent = "Plan de sala · " + fechaLarga(fechaActual) + " · " + nombreTurno;
+  document.getElementById("sub-plan").textContent =
+    plan.asignados.length + " grupos con mesa · " +
+    plan.asignados.reduce((s, i) => s + i.pax, 0) + " personas sentadas · " +
+    plan.libresTodoElTurno.length + " mesas libres todo el servicio";
+
+  document.getElementById("marcadores-plan").innerHTML =
+    marcador(plan.items.length, "Reservas") +
+    marcador(plan.items.reduce((s, i) => s + i.pax, 0), "Personas") +
+    marcador(plan.picoSentado, "Pico a la vez") +
+    marcador(Math.max(0, (Number(datos.config.sillas) || 0) - plan.picoSentado), "Sillas de sobra") +
+    marcador(plan.sinMesa.length, "Sin mesa");
+
+  document.getElementById("avisos-plan").innerHTML =
+    plan.avisos.map(a => '<li class="' + (a.tipo === "aviso" ? "" : a.tipo) + '">' + escapar(a.texto) + "</li>").join("");
+
+  const mesaPorId = {};
+  plan.mesas.forEach(m => { mesaPorId[m.id] = m; });
+
+  const bloques = plan.items.map(i => {
+    const conMesa = i.mesas.length > 0;
+    const dibujo = conMesa
+      ? i.mesas.map(idMesa => dibujarMesa(mesaPorId[idMesa], "")).join('<span class="union">+</span>')
+      : '<span style="font-size:13px;color:var(--alerta)">Sin mesa</span>';
+    const plazas = conMesa
+      ? i.mesas.reduce((s, idMesa) => s + mesaPorId[idMesa].plazas, 0) - (Number(datos.config.perdidaUnion) || 0) * (i.mesas.length - 1)
+      : 0;
+    return '<div class="bloque"' + (conMesa ? "" : ' style="border-color:#f0c9b8;background:var(--alerta-bg)"') + ">" +
+      '<div class="cabecera">' + escapar(i.ref.nombre || "Sin nombre") + "</div>" +
+      '<div class="detalle">' + i.ref.hora + "–" + aHora(i.fin) + " · " + i.pax + " pax" +
+        (conMesa ? " · " + plazas + " sitios" : "") + "</div>" +
+      '<div class="mesas-dibujo">' + dibujo + "</div>" +
+      (i.ref.nota ? '<div class="nota">' + escapar(i.ref.nota) + "</div>" : "") +
+      (conMesa ? "" : '<div class="nota">' + escapar(i.motivo) + "</div>") +
+      "</div>";
+  }).join("");
+
+  const sueltas = plan.libresTodoElTurno.map(idMesa => dibujarMesa(mesaPorId[idMesa], "libre")).join("");
+  const paso = plan.reservadasPaso.map(idMesa => dibujarMesa(mesaPorId[idMesa], "paso")).join("");
+
+  document.getElementById("bloques-plan").innerHTML =
+    (bloques || '<div class="sin-datos">Sin reservas en este servicio.</div>') +
+    (sueltas ? '<div class="bloque" style="background:#fafbfb"><div class="cabecera">Libres todo el servicio</div>' +
+      '<div class="detalle">Para quien caiga sin avisar</div><div class="mesas-dibujo">' + sueltas + "</div></div>" : "") +
+    (paso ? '<div class="bloque" style="border-color:#f0c9b8"><div class="cabecera">Guardadas sin reserva</div>' +
+      '<div class="detalle">No se asignan nunca</div><div class="mesas-dibujo">' + paso + "</div></div>" : "");
+
+  pintarFranjas(plan, mesaPorId);
+  pintarHoja(plan);
+}
+
+function pintarFranjas(plan, mesaPorId) {
+  const cont = document.getElementById("franjas-plan");
+  if (!plan.items.length || !plan.mesas.length) {
+    cont.innerHTML = '<div class="sin-datos">Sin reservas que repartir.</div>';
+    return;
+  }
+  const inicios = plan.items.map(i => i.ini);
+  const finales = plan.items.map(i => i.fin);
+  const desde = Math.floor(Math.min.apply(null, inicios) / 30) * 30;
+  const hasta = Math.ceil(Math.max.apply(null, finales) / 30) * 30;
+
+  const columnas = [];
+  for (let t = desde; t < hasta; t += 30) columnas.push(t);
+
+  let html = "<table><thead><tr><th>Mesa</th>" +
+    columnas.map(t => "<th>" + aHora(t) + "</th>").join("") + "</tr></thead><tbody>";
+
+  plan.mesas.forEach(m => {
+    const guardada = plan.reservadasPaso.indexOf(m.id) !== -1;
+    html += '<tr><td class="mesa-id">' + m.id + ' <span style="color:var(--gris);font-weight:400">·' + m.plazas + "</span></td>";
+    columnas.forEach(t => {
+      const tramo = plan.ocupacion[m.id].find(o => t < o.fin && t + 30 > o.ini);
+      if (tramo) {
+        const color = tono(tramo.res.ref.nombre);
+        html += '<td class="celda" style="background:' + color + '" title="' +
+          escapar(tramo.res.ref.nombre) + " · " + tramo.res.ref.hora + '">' +
+          escapar(recortar(tramo.res.ref.nombre, 12)) + "</td>";
+      } else {
+        html += '<td class="celda vacio"' + (guardada ? ' style="background:#fdeee7"' : "") + "></td>";
+      }
+    });
+    html += "</tr>";
+  });
+  html += "</tbody></table>";
+  cont.innerHTML = html;
+}
+
+function pintarHoja(plan) {
+  document.getElementById("hoja-servicio").innerHTML = plan.items.length
+    ? plan.items.map(i =>
+        '<tr' + (i.mesas.length ? "" : ' class="fila-alerta"') + ">" +
+          "<td>" + escapar(i.ref.hora) + "</td>" +
+          "<td><b>" + escapar(i.ref.nombre || "Sin nombre") + "</b>" +
+            (i.ref.tel ? ' <span style="color:var(--gris)">· ' + escapar(i.ref.tel) + "</span>" : "") + "</td>" +
+          "<td>" + i.pax + "</td>" +
+          "<td><b>" + (i.mesas.length ? i.mesas.join(" + ") : "—") + "</b></td>" +
+          "<td>" + escapar(i.ref.nota || (i.mesas.length ? "" : i.motivo)) + "</td>" +
+        "</tr>"
+      ).join("")
+    : '<tr><td colspan="5" class="sin-datos">Sin reservas.</td></tr>';
+}
+
+function recortar(s, n) { return s.length > n ? s.slice(0, n - 1) + "…" : s; }
+
+function tono(texto) {
+  let h = 0;
+  for (let i = 0; i < texto.length; i++) h = (h * 31 + texto.charCodeAt(i)) % 360;
+  return "hsl(" + h + ",58%,88%)";
+}
+
+function fechaLarga(iso) {
+  const p = iso.split("-");
+  const d = new Date(+p[0], +p[1] - 1, +p[2]);
+  const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  return dias[d.getDay()] + " " + d.getDate() + " de " + meses[d.getMonth()];
+}
+
+/* ───────────────────────── Navegación y copias ───────────────────────── */
+
+function verPestana(nombre) {
+  ["terraza", "reservas", "plano"].forEach(p => {
+    document.getElementById(p).classList.toggle("activa", p === nombre);
+    document.getElementById("tab-" + p).classList.toggle("activa", p === nombre);
+  });
+  if (nombre === "plano") pintarPlan();
+  if (nombre === "terraza") pintarResumenTerraza();
+  window.scrollTo(0, 0);
+}
+
+function exportarJSON() {
+  const blob = new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "bar-piscina-" + hoyISO() + ".json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importarJSON(input) {
+  const archivo = input.files && input.files[0];
+  if (!archivo) return;
+  const lector = new FileReader();
+  lector.onload = function () {
+    try {
+      const nuevo = JSON.parse(lector.result);
+      if (!nuevo || typeof nuevo !== "object" || !nuevo.config) throw new Error("formato");
+      if (!confirm("Esto sustituye la configuración y las reservas guardadas. ¿Sigo?")) return;
+      datos = {
+        config: Object.assign({}, PREDETERMINADO.config, nuevo.config, {
+          mesas: Object.assign({}, PREDETERMINADO.config.mesas, nuevo.config.mesas || {}),
+          servicios: Object.assign({}, PREDETERMINADO.config.servicios, nuevo.config.servicios || {})
+        }),
+        dias: nuevo.dias || {}
+      };
+      guardar();
+      pintarConfig();
+      pintarReservas();
+      pintarPlan();
+      alert("Copia importada.");
+    } catch (e) {
+      alert("Ese archivo no parece una copia válida.");
+    }
+  };
+  lector.readAsText(archivo);
+  input.value = "";
+}
+
+function borrarTodo() {
+  if (!confirm("Se borran la terraza y todas las reservas guardadas. ¿Seguro?")) return;
+  localStorage.removeItem(CLAVE);
+  datos = estructuraInicial();
+  guardar();
+  pintarConfig();
+  pintarReservas();
+  pintarPlan();
+}
+
+/* ───────────────────────── Arranque ───────────────────────── */
+
+pintarConfig();
+pintarReservas();
+pintarPlan();
+</script>
+</body>
+</html>
