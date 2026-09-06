@@ -43,6 +43,16 @@ aquí. Lo nuevo va arriba; lo que deja de ser verdad se tacha, no se borra.
   inclusiones, a propósito: lo que se añada mañana y no esté contemplado cuenta
   como publicable y **construye**. Con una lista de inclusiones, una carpeta
   nueva se quedaría fuera en silencio, que es el fallo caro.
+- **`ignoreCommand` no puede pasar de 256 caracteres.** No está en las
+  CONVENCIONES y costó un despliegue en `ERROR`: la primera versión medía 260
+  y Vercel la rechazó entera con *«`vercel.json` schema validation failed:
+  `ignoreCommand` should NOT be longer than 256 characters»*. Falla en la
+  validación del fichero, **antes de construir**, así que el despliegue no
+  llegó a promocionarse y producción siguió sirviendo el build anterior; no
+  hubo caída, pero tampoco guardián. Se arregla usando la forma corta `:!` en
+  lugar de `:(exclude)`, que es el mismo pathspec: 205 caracteres, las seis
+  exclusiones intactas. **Si mañana hay que añadir exclusiones, hay que contar
+  los caracteres**, o la protección se cae entera sin avisar.
 - **Probado antes de empujar**, ejecutando el comando extraído del JSON con
   `sh -c` y `VERCEL_GIT_PREVIOUS_SHA` puesta a mano: push solo de
   documentación → salta; push mixto con código → construye; `public/` →
