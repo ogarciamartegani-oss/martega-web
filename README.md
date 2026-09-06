@@ -70,3 +70,10 @@ npm run lint
 npm run build
 npm run preview
 ```
+
+## Fuente y espejo
+
+Este repositorio es **la fuente**. La copia en `nexo-hq/proyectos/martega/web`
+es un espejo: se trabaja aquí y se copia allí. Qué es cada carpeta y dónde
+acaba la frontera entre navegador y servidor, en `ESTRUCTURA.md`; la revisión
+de seguridad que corre en cada push, `node herramientas/auditar-repo.mjs .`.
