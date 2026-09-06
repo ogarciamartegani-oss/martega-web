@@ -53,6 +53,16 @@ aquí. Lo nuevo va arriba; lo que deja de ser verdad se tacha, no se borra.
   lugar de `:(exclude)`, que es el mismo pathspec: 205 caracteres, las seis
   exclusiones intactas. **Si mañana hay que añadir exclusiones, hay que contar
   los caracteres**, o la protección se cae entera sin avisar.
+- **Verificado en Vercel, no solo en local.** El despliegue de `55a0980`
+  (`READY`, producción) registra en el log la línea `Running "B="${VERCEL_GIT_
+  PREVIOUS_SHA:-}"; …"` y a continuación `Running "vercel build"`: el guardián
+  se ejecuta y deja pasar el build, que es lo correcto porque ese push tocaba
+  `vercel.json`. Eso prueba el sentido «construye». El sentido «salta» se
+  prueba con **este mismo push**, que solo toca este README —una ruta
+  excluida— y por tanto debe quedar en `CANCELED`. Era la parte que faltaba
+  por comprobar de verdad: en local la base siempre está, pero Vercel clona en
+  superficial, y si `VERCEL_GIT_PREVIOUS_SHA` no resolviera allí, el guardián
+  construiría siempre y no ahorraría nada sin que se notara.
 - **Probado antes de empujar**, ejecutando el comando extraído del JSON con
   `sh -c` y `VERCEL_GIT_PREVIOUS_SHA` puesta a mano: push solo de
   documentación → salta; push mixto con código → construye; `public/` →
