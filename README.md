@@ -57,12 +57,17 @@ aquí. Lo nuevo va arriba; lo que deja de ser verdad se tacha, no se borra.
   (`READY`, producción) registra en el log la línea `Running "B="${VERCEL_GIT_
   PREVIOUS_SHA:-}"; …"` y a continuación `Running "vercel build"`: el guardián
   se ejecuta y deja pasar el build, que es lo correcto porque ese push tocaba
-  `vercel.json`. Eso prueba el sentido «construye». El sentido «salta» se
-  prueba con **este mismo push**, que solo toca este README —una ruta
-  excluida— y por tanto debe quedar en `CANCELED`. Era la parte que faltaba
-  por comprobar de verdad: en local la base siempre está, pero Vercel clona en
-  superficial, y si `VERCEL_GIT_PREVIOUS_SHA` no resolviera allí, el guardián
-  construiría siempre y no ahorraría nada sin que se notara.
+  `vercel.json`. Eso prueba el sentido «construye».
+- **Y el sentido «salta», también confirmado en vivo.** El push de `61c257b`
+  solo tocaba este README —ruta excluida— y Vercel lo dejó en `CANCELED` con
+  el motivo escrito en el log: *«The deployment was canceled because the
+  Ignored Build Step command returned exit code 0.»* Clonó a las 21:03:58 y
+  canceló a las 21:03:59: ni un minuto de build. Era la parte que no se podía
+  comprobar en local, porque aquí la base siempre está; Vercel clona en
+  superficial, y si `VERCEL_GIT_PREVIOUS_SHA` no resolviera en ese clon el
+  guardián construiría siempre y no ahorraría nada sin que nadie lo notase.
+  Resuelve: sí resuelve. Y `CANCELED` en este repo, a partir de hoy, no es un
+  fallo que haya que investigar.
 - **Probado antes de empujar**, ejecutando el comando extraído del JSON con
   `sh -c` y `VERCEL_GIT_PREVIOUS_SHA` puesta a mano: push solo de
   documentación → salta; push mixto con código → construye; `public/` →
