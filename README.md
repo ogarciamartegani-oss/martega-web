@@ -7,6 +7,49 @@ Sitio corporativo público de Martega Instalaciones y Mantenimiento, S.L. Incluy
 Este repositorio no tiene `MEMORIA_ACTIVA.md`: el estado con fecha se deja
 aquí. Lo nuevo va arriba; lo que deja de ser verdad se tacha, no se borra.
 
+### 2026-09-06 · `ignoreCommand`: el guardián de builds, puesto
+
+- **Resuelto el pendiente de abajo.** `vercel.json` ya lleva `ignoreCommand`
+  con el patrón de `nexo-hq/proyectos/nordic-boats/web`. Cada push dejaba un
+  build; ahora solo lo deja si el push tocó algo que se publica.
+- **El sentido de la salida, que es lo único que hay que no equivocar.**
+  `ignoreCommand` **sale 0 → se salta el build** (el despliegue queda en
+  `CANCELED`, que no es un fallo); **sale 1 → construye**. Está al revés de lo
+  que pide el cuerpo, así que aquí queda escrito: `git diff --quiet` sale 0
+  cuando **no hay diferencias**, y eso es exactamente cuando no queremos
+  construir. Los dos encajan sin invertir nada. Si alguien se equivoca de
+  sentido, la web deja de desplegarse y nadie se entera: esto es producción y
+  el único repositorio público de la cuenta.
+- **Se compara contra `VERCEL_GIT_PREVIOUS_SHA`, no contra `HEAD^`.** El
+  patrón `git diff --quiet HEAD^ HEAD -- .` está roto: solo mira la última
+  commit del push. Con la regla de la casa de **un push por tarea**, y con la
+  costumbre de dejar la nota de estado en el último commit, el caso normal es
+  un push cuyo último commit toca solo este README — y ese patrón se saltaría
+  un despliegue real. Comprobado antes de escribir esto sobre commits de
+  prueba: base = commit de código + commit de README; `HEAD^ HEAD` dijo saltar
+  (mal), `VERCEL_GIT_PREVIOUS_SHA` dijo construir (bien).
+- **Si no hay base conocida, se construye. Nunca al revés.** Vercel clona en
+  superficial y ese commit puede no estar en el clon (`fatal: bad object`), o
+  la variable puede venir vacía en el primer despliegue de una rama. Por eso
+  `git cat-file -e "$B^{commit}" || exit 1` va **antes** del diff: sin base
+  fiable no se decide, se construye. No se pone el respaldo `:-HEAD^` de
+  nordic-boats justamente porque ese respaldo es el patrón roto de arriba;
+  cuesta como mucho un build de más por rama nueva, y a cambio no se pierde
+  ninguno.
+- **Qué rutas mira.** Aquí la raíz de despliegue es la raíz del repositorio, así
+  que `-- .` a secas incluiría documentación y CI. Se excluye lo que no entra
+  en `vite build`: `*.md` de la raíz, `.github/`, `herramientas/`, `supabase/`,
+  `.env.example` y `eslint.config.js`. Es una lista de **exclusiones**, no de
+  inclusiones, a propósito: lo que se añada mañana y no esté contemplado cuenta
+  como publicable y **construye**. Con una lista de inclusiones, una carpeta
+  nueva se quedaría fuera en silencio, que es el fallo caro.
+- **Probado antes de empujar**, ejecutando el comando extraído del JSON con
+  `sh -c` y `VERCEL_GIT_PREVIOUS_SHA` puesta a mano: push solo de
+  documentación → salta; push mixto con código → construye; `public/` →
+  construye; solo `vercel.json` → construye; base vacía, base fuera del clon y
+  base no-sha → construye; sin cambios → salta. `auditar-repo.mjs` sigue en
+  verde (0 ❌, 0 ⚠️): las seis cabeceras no se han tocado.
+
 ### 2026-09-06 · Las seis cabeceras, ya en `main`
 
 - **Fusionado el PR #1** (`claude/code-structure-security-akes7x`). Añade CSP,
@@ -31,10 +74,11 @@ aquí. Lo nuevo va arriba; lo que deja de ser verdad se tacha, no se borra.
 
 ### Pendiente, sin decidir
 
-- **`vercel.json` sigue sin `ignoreCommand`**, contra las CONVENCIONES: cada
+- ~~**`vercel.json` sigue sin `ignoreCommand`**, contra las CONVENCIONES: cada
   push construye aunque no se haya tocado nada que se publique. Se deja fuera
   del PR #1 a propósito, para no mezclar cabeceras con despliegue. Queda
-  abierto: es un cambio de una línea y una tarea propia.
+  abierto: es un cambio de una línea y una tarea propia.~~ → Hecho el
+  2026-09-06, en su tarea propia como se dijo. Ver la sección de arriba.
 
 ## Arranque local
 

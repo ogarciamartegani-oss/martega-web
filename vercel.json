@@ -1,4 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "B=\"${VERCEL_GIT_PREVIOUS_SHA:-}\"; git cat-file -e \"$B^{commit}\" 2>/dev/null || exit 1; git diff --quiet \"$B\" HEAD -- . ':(exclude,glob)*.md' ':(exclude).github' ':(exclude)herramientas' ':(exclude)supabase' ':(exclude).env.example' ':(exclude)eslint.config.js'",
   "redirects": [
     {
       "source": "/mantenimiento",
