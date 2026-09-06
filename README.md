@@ -2,6 +2,40 @@
 
 Sitio corporativo público de Martega Instalaciones y Mantenimiento, S.L. Incluye captación de solicitudes en Supabase, consentimiento trazable, páginas legales, diseño responsive y accesibilidad.
 
+## Estado
+
+Este repositorio no tiene `MEMORIA_ACTIVA.md`: el estado con fecha se deja
+aquí. Lo nuevo va arriba; lo que deja de ser verdad se tacha, no se borra.
+
+### 2026-09-06 · Las seis cabeceras, ya en `main`
+
+- **Fusionado el PR #1** (`claude/code-structure-security-akes7x`). Añade CSP,
+  HSTS y Permissions-Policy a las tres cabeceras que ya había en
+  `vercel.json`, el flujo `Seguridad` (lint + build + `auditar-repo.mjs`) en
+  cada push, `ESTRUCTURA.md` y las cuatro familias de secretos en
+  `.gitignore`. La rama se queda: aquí no se borra nada.
+- **Cómo se comprobó, y no leyendo el código.** `npm run lint`, `npm run
+  build` y `node herramientas/auditar-repo.mjs .` en verde (0 ❌, 0 ⚠️). El
+  `dist/` se sirvió en local con las cabeceras reales de `vercel.json` y se
+  abrió en un navegador: portada, `/servicios/electricidad` y `/acceso` (que
+  es la que carga el trozo de Supabase) sin una sola violación de CSP en
+  consola. Los dos `<script type="application/ld+json">` que la web inyecta
+  desde JavaScript siguen en el DOM — son datos, no se ejecutan, y la CSP no
+  los toca. La hoja de Google Fonts entra por `@import` desde el CSS
+  compilado y sus 57 tipografías cargan desde `fonts.gstatic.com`.
+- **Por qué la CSP es la que es.** No hay ni un `<script>` en línea: Vite
+  emite ficheros propios bajo `/assets`. Lo externo son Google Fonts (hoja y
+  fuentes), Supabase por REST — sin `realtime`, luego sin `wss:`, por eso
+  `connect-src` con `https://*.supabase.co` basta — y los enlaces `wa.me`,
+  que son navegación y no recurso, así que ninguna directiva los mira.
+
+### Pendiente, sin decidir
+
+- **`vercel.json` sigue sin `ignoreCommand`**, contra las CONVENCIONES: cada
+  push construye aunque no se haya tocado nada que se publique. Se deja fuera
+  del PR #1 a propósito, para no mezclar cabeceras con despliegue. Queda
+  abierto: es un cambio de una línea y una tarea propia.
+
 ## Arranque local
 
 ```bash
@@ -70,3 +104,10 @@ npm run lint
 npm run build
 npm run preview
 ```
+
+## Fuente y espejo
+
+Este repositorio es **la fuente**. La copia en `nexo-hq/proyectos/martega/web`
+es un espejo: se trabaja aquí y se copia allí. Qué es cada carpeta y dónde
+acaba la frontera entre navegador y servidor, en `ESTRUCTURA.md`; la revisión
+de seguridad que corre en cada push, `node herramientas/auditar-repo.mjs .`.

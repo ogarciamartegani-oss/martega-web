@@ -20,3 +20,26 @@ yarn-error.log*
 .DS_Store
 .vscode/
 .idea/
+
+# ── Seguridad · SEGURIDAD-BASE.md de NEXO HQ ─────────────────────────────
+# Cuatro familias que no entran en git aunque el repositorio sea privado:
+# entorno con valores reales, claves privadas, bases de datos y almacenes de
+# firma. Los .example sí, y por eso van exceptuados.
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.pem
+*.key
+!**/public/**/*.key
+id_rsa
+id_ed25519
+credentials.json
+service-account*.json
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.dump
+*.jks
+*.keystore

@@ -1,0 +1,34 @@
+# ==========================================================================
+# martega-web · integración continua
+#
+# lint + build en cada push, y auditar-repo.mjs (SEGURIDAD-BASE.md y
+# ESTRUCTURA.md de NEXO HQ): secretos, .env, cabeceras, frontera navegador/
+# servidor. No despliega nada: eso lo hace Vercel desde main.
+# ==========================================================================
+
+name: Seguridad
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auditar:
+    name: lint, build y auditar-repo.mjs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+      - name: Estructura y seguridad del repositorio
+        run: node herramientas/auditar-repo.mjs .
